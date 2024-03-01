@@ -1,0 +1,24 @@
+/* Define HTML variables (custom properties) */
+:root {
+  --my-brand-color: #2196f3; /* Primary Color */
+  --my-soft-brand-color: rgba(33, 150, 243, 0.2);
+  --my-soft-green-color: rgba(165, 214, 167, 0.2);
+  --my-heart-color: #4caf50;
+  --my-text-slate-gray-color: #727272;
+  --my-light-grey-color: #d3d3d3; /* Neutrals Group */
+  --my-silver-color: #c0c0c0; /* Neutrals Group */
+  --my-turquoise-color: #40e0d0; /* Highlight Group */
+  --my-dark-blue-color: #1565c0; /* Main Colors */
+  --my-royal-blue-color: #4169e1; /* Main Colors */
+  --my-indigo-color: #4b0082; /* Creative Group */
+  --my-navy-blue-color: #000080; /* Depth Group */
+  --my-stripe-color: #f4f2ff; /* Backgrounds */
+  --my-light-theme-color: #f9f9fc; /* Backgrounds */
+  --my-dark-color: #2f2f2f;
+  --my-non-important-text-color: #a0abc0;
+  --my-teal-blue-color: #009688;
+  --my-content-color: #eeee;
+
+  --sidebar-expanded-width: 300px; // Width when the sidebar is expanded
+  --sidebar-collapsed-width: 62px; // Width when the sidebar is collapsed or not active
+}
