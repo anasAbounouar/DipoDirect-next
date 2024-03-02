@@ -1,4 +1,4 @@
-import { NavLink } from '@/components/Navlink'
+import { NavLink } from '@/components/navlink'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {

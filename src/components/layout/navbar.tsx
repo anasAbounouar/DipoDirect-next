@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { NavLink } from '../Navlink'
+import { NavLink } from '../navlink'
 // import Link from 'next/link';
 import styled from 'styled-components'
 
@@ -182,14 +182,14 @@ const AcmeLogo = () => (
             height={20}
             className="h-8 rounded-lg"
         />
-        <span
-            onClick={() => setIsClicked(true)}
-            className="self-center text-xl font-semibold whitespace-nowrap text-myBrand hover:text-blue-400 delay-100"
-        ></span>
+        <span className="self-center text-xl font-semibold whitespace-nowrap text-myBrand hover:text-blue-400 delay-100"></span>
     </>
 )
 
 const Nav = styled(Navbar)`
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
     a {
         font-size: 13px;
     }

@@ -2,7 +2,7 @@
 import ContactUs from '@/components/features/contactUs'
 // import Image from "next/image";
 import ServiceDescription from '@/components/features/serviceDescription'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 // import Dropdown from "@/components/common/dropdown";
 
 import {
@@ -28,6 +28,8 @@ const MosqueSection = styled.section`
 `
 
 export default function Home() {
+    const imageInput = useRef()
+
     const router = useRouter() // Use the useRouter hook
     const [selectedOption, setSelectedOption] = useState(
         '__choisir un fournisseur'
@@ -54,12 +56,12 @@ export default function Home() {
         <main>
             <MosqueSection
                 id="mosque"
-                className={`relative p-4 flex items-center justify-center`}
+                className={`relative p-4  flex items-center justify-center bg-cover bg-center`}
             >
                 <Image
                     src="/assets/mosque2.svg"
                     alt="Mosque Background"
-                    layout="fill"
+                    fill={true}
                     style={{ objectFit: 'cover' }}
                     quality={100}
                 />
