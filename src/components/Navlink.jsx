@@ -11,12 +11,12 @@ import { usePathname } from 'next/navigation'
  
 export const NavLink = ({ href, activeClassName='active',exact='false', children, ...props }) => {
   const pathname = usePathname()
-  const active = 'font-bold' 
+  const active = ' font-bold ' 
   const isActive = exact ? pathname === href : pathname.startsWith(href)
  
   if (isActive) {
     props.className += active
-    props.className += ` ${activeClassName}`
+    props.className += ` ${activeClassName} `
   }
  
   return (

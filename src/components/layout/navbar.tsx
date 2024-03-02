@@ -178,7 +178,7 @@ const AcmeLogo = () => (
         <Image
             src="/assets/logo.png"
             alt="DipoDirect logo"
-            width={70} // Specify width and height for Next.js Image component
+            width={70}
             height={20}
             className="h-8 rounded-lg"
         />
@@ -190,15 +190,18 @@ const AcmeLogo = () => (
 )
 
 const Nav = styled(Navbar)`
+    a {
+        font-size: 13px;
+    }
     z-index: 99;
     a {
-        color: black;
+        /* color: black; */
         &:hover {
-            color: blue;
+            color: var(--my-brand-color);
         }
     }
     a.active {
-        color: blue;
+        color: var(--my-brand-color) !important;
     }
     ul {
         border-radius: 0px 0px 15px 15px;
@@ -210,7 +213,7 @@ export default function App() {
     return (
         <Nav>
             <NavbarBrand>
-                <NavLink exact="false" href="/" className="flex flex-row">
+                <NavLink exact="true" href="/" className="flex flex-row">
                     <AcmeLogo />
                     <p className=" ml-1 font-bold text-inherit self-center text-xl  whitespace-nowrap text-myBrand hover:text-blue-400 delay-100">
                         {' '}
@@ -221,12 +224,13 @@ export default function App() {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <NavLink color="foreground" href="/">
+                    <NavLink exact="true" color="foreground" href="/">
                         Acceuil
                     </NavLink>
                 </NavbarItem>
                 <NavbarItem>
                     <NavLink
+                        exact="true"
                         href="/about"
                         aria-current="page"
                         color="secondary"
@@ -235,7 +239,7 @@ export default function App() {
                     </NavLink>
                 </NavbarItem>
                 <NavbarItem>
-                    <NavLink color="foreground" href="#">
+                    <NavLink exact="true" color="foreground" href="/contact">
                         Contact
                     </NavLink>
                 </NavbarItem>

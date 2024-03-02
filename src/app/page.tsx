@@ -2,7 +2,7 @@
 import ContactUs from '@/components/features/contactUs'
 // import Image from "next/image";
 import ServiceDescription from '@/components/features/serviceDescription'
-import { useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 // import Dropdown from "@/components/common/dropdown";
 
 import {
@@ -11,15 +11,20 @@ import {
     Button,
     DropdownMenu,
     DropdownItem,
+    Spinner,
 } from '@nextui-org/react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
 import PromoteSection from '@/components/features/promoteSection'
+// import { Loading as Spinner } from '@nextui-org/react'
 
 const MosqueSection = styled.section`
-    background: url('/assets/mosque2.svg') no-repeat bottom / cover !important;
-    height: 80dvh;
-    margin-top: 0px;
+    position: relative;
+    height: 80vh;
+    width: 100%;
+    margin-top: 0;
+    overflow: hidden; // Prevents the image from overflowing the container
 `
 
 export default function Home() {
@@ -38,10 +43,11 @@ export default function Home() {
         // ... add more options as needed
     ]
     // Function to handle the selection change and navigate
+    const [loading, setLoading] = useState(false)
+
     const handleSelect = (optionValue) => {
-        setSelectedOption(optionValue) // Store the entire option object
-        // Navigate to the selected option's value
-        router.push(`/${optionValue}`)
+        setSelectedOption(optionValue)
+        router.push(`/${optionValue}`) // Wait for router.push to complete
     }
 
     return (
@@ -50,42 +56,61 @@ export default function Home() {
                 id="mosque"
                 className={`relative p-4 flex items-center justify-center`}
             >
+                <Image
+                    src="/assets/mosque2.svg"
+                    alt="Mosque Background"
+                    layout="fill"
+                    style={{ objectFit: 'cover' }}
+                    quality={100}
+                />
                 <div className="overlay"></div>
                 <div className="container relative">
                     <div className="flex flex-col items-center justify-center">
                         <div className="w-10/12 mb-3 flex items-center justify-center">
-                            <h3 className="text-white relative text-xl md:text-3xl font-bold text-center">
+                            <h3 className="text-white relative text-xl m font-bold text-center">
                                 Acheter votre Fourniture en un seul click!
                             </h3>
                         </div>
                         <div className="w-8/12 flex items-center justify-center">
                             {/* Use the SelectComponent here */}
                             <form>
-                                <Dropdown className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px] rounded-lg">
-                                    <DropdownTrigger className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px] rounded-lg bg-white">
-                                        <Button
-                                            variant="bordered"
-                                            className="w-full"
-                                        >
-                                            {selectedOption}
-                                        </Button>
-                                    </DropdownTrigger>
-                                    <DropdownMenu
-                                        aria-label="choix du librairie"
-                                        className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px]"
-                                    >
-                                        {options.map((option) => (
-                                            <DropdownItem
-                                                key={option.id}
-                                                onClick={() =>
-                                                    handleSelect(option.value)
-                                                }
+                                {loading ? (
+                                    <Spinner
+                                        size="lg"
+                                        label="Loading"
+                                        color="default"
+                                        labelColor="foreground"
+                                    />
+                                ) : (
+                                    <Dropdown className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px] rounded-lg">
+                                        <DropdownTrigger className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px] rounded-lg bg-white">
+                                            <Button
+                                                variant="bordered"
+                                                className="w-full"
                                             >
-                                                {option.label}
-                                            </DropdownItem>
-                                        ))}
-                                    </DropdownMenu>
-                                </Dropdown>
+                                                {selectedOption}
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu
+                                            aria-label="choix du librairie"
+                                            className="w-full sm:w-[300px] md:w-[400px] lg:w-[500px]"
+                                        >
+                                            {options.map((option) => (
+                                                <DropdownItem
+                                                    key={option.id}
+                                                    onClick={() => {
+                                                        handleSelect(
+                                                            option.value
+                                                        )
+                                                        setLoading(true)
+                                                    }}
+                                                >
+                                                    {option.label}
+                                                </DropdownItem>
+                                            ))}
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                )}
                             </form>
                         </div>
                     </div>
