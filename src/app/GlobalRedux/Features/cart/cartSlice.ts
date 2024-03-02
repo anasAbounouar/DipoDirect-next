@@ -1,6 +1,6 @@
 "use client";
 
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   // justfor information
   libraries: {
@@ -15,7 +15,10 @@ const initialState = {
   },
   // used elements
   cart: {},
-  wishlist: [],
+  wishlist: {
+    arrissala: { ecritures: [], papeterie: [], organisation: [] },
+    aladnane: { ecritures: [], papeterie: [], organisation: [] },
+  },
 };
 
 export const cartSlice = createSlice({
@@ -23,6 +26,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addOrModifyBookInCart: (state, action) => {
+      console.log("adding or modifying");
       const { book, type, chosenLibrary, quantity } = action.payload;
 
       // Initialize library in cart if not existent
@@ -36,47 +40,42 @@ export const cartSlice = createSlice({
 
       // Find the book in the specified category of the library
       let existingBook = state.cart[chosenLibrary][type].find(
-        (b) => b.book.id === book.id
+        (b) => b.id === book.id
       );
 
       if (existingBook) {
         // If book exists, modify its quantity
         existingBook.quantity = quantity;
+        console.log("quantity modified");
       } else {
         // If book does not exist, add it with its quantity
         state.cart[chosenLibrary][type].push({
           ...book,
           quantity,
-          id: nanoid(),
+       
         });
       }
     },
     removeBookFromCart: (state, action) => {
       const { bookId, type, chosenLibrary } = action.payload;
       state.cart[chosenLibrary][type] = state.cart[chosenLibrary][type].filter(
-        (item) => item.book.id !== bookId
+        (item) => item.id !== bookId
       );
     },
     toggleBookWishlist: (state, action) => {
-      const { bookId } = action.payload;
-      const existingIndex = state.wishlist.findIndex(
-        (book) => book.id === bookId
+      const { book, chosenLibrary, type } = action.payload;
+
+      // Check if the book is already in the wishlist for the given library and type
+      const existingIndex = state.wishlist[chosenLibrary][type].findIndex(
+        (b) => b.id === book.id
       );
+
       if (existingIndex > -1) {
-        // Remove from wishlist if it exists
-        state.wishlist.splice(existingIndex, 1);
+        // If the book is found, remove it from the wishlist
+        state.wishlist[chosenLibrary][type].splice(existingIndex, 1);
       } else {
-        // Find the book in any library or category to add to the wishlist
-        Object.keys(state.cart).forEach((library) => {
-          Object.keys(state.cart[library]).forEach((category) => {
-            const foundBook = state.cart[library][category].find(
-              (book) => book.id === bookId
-            );
-            if (foundBook) {
-              state.wishlist.push(foundBook);
-            }
-          });
-        });
+        // If the book is not found, add it to the wishlist under the chosen library and type
+        state.wishlist[chosenLibrary][type].push(book);
       }
     },
   },
