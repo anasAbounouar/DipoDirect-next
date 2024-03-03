@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import { Button } from "@nextui-org/react";
 // import styles from "./ItemCard.module.scss";:
 const card = {
   borderRadius: "10px",
@@ -173,7 +174,7 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
 
           {/* Action Panel */}
           <div className="flex items-center p-2 justify-between actionPanier gap-3">
-            <button
+            <Button
               onClick={handleAddingOrRemoving}
               className={`btn addToCartBtn    bg-[#004494]    text-white  ajouter ${
                 addedToCart ? "addedToCartClass" : ""
@@ -192,11 +193,11 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
                 ) : (
                   <span>
                     + Ajouter au panier
-                    <FontAwesomeIcon icon={faShoppingCart} />;
+                    <FontAwesomeIcon icon={faShoppingCart} />
                   </span>
                 )}
               </span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { NavLink } from "@/components/navlink";
 import { Input } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import CartNavDesktop from "@/components/layout/cartNavDesktop";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import "swiper/css";
@@ -347,6 +348,7 @@ export default function Items({
   };
   return (
     <section id="intern" className={`relative pb-4 bg-myContent `}>
+      <CartNavDesktop />
       {showFilter() && (
         <SideFilter
           babyLevels={babyLevels}
@@ -452,14 +454,14 @@ export default function Items({
         <section className="min-h-96">
           {/* Conditional rendering based on isLoading */}
           {isLoading ? (
-            <h1>
+            <div className="w-full flex item-center justify-center">
               <Spinner
                 size="lg"
                 label="Loading"
                 color="default"
                 labelColor="foreground"
               />
-            </h1>
+            </div>
           ) : displayedItems.length === 0 ? (
             <h2 className="font-bold text-xl mt-9">
               Pas de Resulat qui correspond a votre recherche :/
