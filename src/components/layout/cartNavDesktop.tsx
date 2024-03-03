@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import {
   getTotalBooksInCart,
   getTotalBooksInWishlist,
-} from "@/utils/wishlistUtils";
+} from "@/utils/cartUtils";
 const AcmeLogo = () => (
   <>
     <Image

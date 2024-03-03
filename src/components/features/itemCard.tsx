@@ -6,10 +6,7 @@ import {
   toggleBookWishlist,
 } from "@/app/GlobalRedux/Features/cart/cartSlice";
 
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +14,7 @@ import { faAngleLeft, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "@nextui-org/react";
+import { removeFromCart, toggleWishlist, addToCart } from "@/utils/cartUtils";
 // import styles from "./ItemCard.module.scss";:
 const card = {
   borderRadius: "10px",
@@ -27,14 +25,7 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
 
-  //   console.log(type);
-  //   const result = useSelector((state) => state.cart);
-  //   console.log(result);
-  //   console.log(result.wishlist);
-  //   console.log(result.wishlist[chosenLibrary]);
-  //   console.log(result.wishlist[chosenLibrary][type]);
   const wishlistBooks = useSelector(
     (state) => state.cart.wishlist[chosenLibrary][type]
   );
@@ -61,38 +52,32 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
       })
     );
   };
-  const handleRemoveFromCart = () => {
-    dispatch(
-      removeBookFromCart({
-        bookId: item.id,
-        type,
-        chosenLibrary,
-      })
-    );
-  };
+  // const handleRemoveFromCart = () => {
+  //   dispatch(
+  //     removeBookFromCart({
+  //       bookId: item.id,
+  //       type,
+  //       chosenLibrary,
+  //     })
+  //   );
+  // };
   const handleAddingOrRemoving = () => {
     if (addedToCart) {
-      handleRemoveFromCart();
+      removeFromCart(dispatch, item.id, chosenLibrary, type);
     } else {
-      handleAddToCart();
+      addToCart(dispatch, item, chosenLibrary, type);
     }
   };
-  const handleToggleWishlist = () => {
-    dispatch(
-      toggleBookWishlist({
-        book: item,
-        chosenLibrary,
-        type,
-      })
-    );
-  };
+
   return (
     <div className={`w-5/12 lg:w-2/12 m-1 bg-white`} style={card}>
       <div className="px-1">
         {/* Heart icon for adding to wishlist */}
         <div className="relative pb-4 pt-2">
           <button
-            onClick={handleToggleWishlist}
+            onClick={() => {
+              toggleWishlist(dispatch, item, chosenLibrary, type);
+            }}
             className="absolute bg-transparent p-1 left-0 top-0 text-myHeartColor z-10 outline-none hover:border-color-none"
             aria-label={
               addedToWishlist ? "Remove from wishlist" : "Add to wishlist"

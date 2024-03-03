@@ -3,13 +3,8 @@ import { NavLink } from "@/components/navlink";
 import { Input } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import CartNavDesktop from "@/components/layout/cartNavDesktop";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 // import SelectComponent from '../../components/common/SelectComponent/SelectComponent';
 import SideFilter from "@/components/features/sideFilter";
 // import ItemCard from '../../components/features/ItemCard/ItemCard.tsx';
@@ -121,13 +116,7 @@ const typeOptions = [
 ];
 
 const itemsPerPage = 12; // Number of items to display per page
-export default function Items({
-  userShoppingSession,
-  setUserShoppingSession,
-  // isSideBarActive,
-  // setIsSideBarActive,
-  myLocalHost = "localhost",
-}) {
+export default function Items({}) {
   const [isSideBarActive, setIsSideBarActive] = useState(false);
   const isMobile = useIsMobile();
   // const router.push = userouter.push()
@@ -182,7 +171,7 @@ export default function Items({
         alert("error");
         setIsloading(false); // An error occurred, stop loading
       });
-  }, [type, port, myLocalHost]); // The empty array ensures this effect runs once when the component mounts
+  }, [type, port]); // The empty array ensures this effect runs once when the component mounts
 
   function filterBySearchTerm() {
     if (!state.searchBooksInput) {
@@ -382,7 +371,7 @@ export default function Items({
           <div className="w-full lg:w-1/2 py-3 lg:py-0 text-center ">
             <NavLink
               href={`/library-intro/${chosenLibrary}`}
-              className="capitalize text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+              className="capitalize font-bold text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
               aria-label={`go back  to ${chosenLibrary} library introduction`}
             >
               {chosenLibrary}
