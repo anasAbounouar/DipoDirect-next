@@ -5,7 +5,7 @@ import { NavLink } from "../navlink";
 // import Link from 'next/link';
 import styled from "styled-components";
 import { Button } from "@nextui-org/react";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@nextui-org/react";
 // import { SearchIcon } from "./SearchIcon";
 import {
@@ -22,6 +22,12 @@ import {
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { useSelector } from "react-redux";
+import {
+  getTotalBooksInCart,
+  getTotalBooksInWishlist,
+} from "@/utils/wishlistUtils";
 const AcmeLogo = () => (
   <>
     <Image
@@ -58,7 +64,30 @@ const Nav = styled(Navbar)`
 `;
 
 export default function CartNavDesktop() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
   const path = usePathname();
+  useEffect(() => {
+    const handleScroll = () => {
+      // Set isScrolled to true if page is scrolled more than 50 pixels, for example
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Add event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []); // Empty array ensures this effect runs only once on mount
+
+  const wishlist = useSelector((state) => state.cart.wishlist);
+
+  const cart = useSelector((state) => state.cart.cart);
+
+  const cartNumber = getTotalBooksInCart(cart)?.length;
+
+  const wishlistNumber = getTotalBooksInWishlist(wishlist).length;
+
   return (
     <Nav>
       <NavbarBrand>
@@ -72,29 +101,20 @@ export default function CartNavDesktop() {
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
+        <NavbarItem
+          style={{
+            transition: "opacity 1.5s ease, visibility 0.5s",
+            opacity: isScrolled ? 0 : 1,
+            visibility: isScrolled ? "hidden" : "visible",
+          }}
+        >
           <form
-            className="flex relative items-center justify-center"
+            className="flex relative items-center justify-center "
             role="search"
             id="rechercheGenerale"
           >
-            {/* <Input
-              key={"outside"}
-              type="text"
-              label="--Recherche generale"
-              labelPlacement={"outside"}
-              aria-label="General Search "
-              bordered
-              contentRightStyling={false}
-              contentRight={
-                <Button
-                  auto
-                  icon={faSearch} // Replace with actual icon and fill
-                  onPress={() => console.log("Search")}
-                />
-              }
-            /> */}
             <Input
+              size="sm"
               isClearable
               radius="lg"
               classNames={{
@@ -125,30 +145,59 @@ export default function CartNavDesktop() {
           </form>
         </NavbarItem>
         <NavbarItem>
-          <NavLink exact="true" color="foreground" href="/">
-            Notification
+          <NavLink
+            exact="true"
+            color="foreground"
+            href="/"
+            className=" flex items-center flex-col justify-center"
+          >
+            <FontAwesomeIcon icon={faBell} fontSize={20} />
+            <span className="text-xs"> Notification</span>
           </NavLink>
         </NavbarItem>
 
         <NavbarItem>
-          <NavLink
+          {/* <NavLink
             exact="true"
             href="/about"
             aria-current="page"
             color="secondary"
+            className=" flex items-center flex-col justify-center"
           >
-            Wishlist
+            <FontAwesomeIcon icon={faHeart} fontSize={20} />
+            <span> Wishlist</span>
+          </NavLink> */}
+          <NavLink
+            exact="true"
+            className="relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+            aria-label={`wishlist ${wishlist}`}
+            href="/wishlist"
+          >
+            <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+              {wishlistNumber}
+            </div>
+            <FontAwesomeIcon icon={faHeart} fontSize={20} />
           </NavLink>
+          <span className="text-xs"> Wishlist</span>
         </NavbarItem>
+
         <NavbarItem>
-          <NavLink exact="true" color="foreground" href="/contact">
-            Contact
+          {/* <NavLink exact="true" color="foreground" href="/contact"> */}
+          <NavLink
+            exact="true"
+            className="nav-link relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+            aria-label="Shopping Cart. 0 items"
+            href="/cart"
+          >
+            <div className="shop-counter absolute bottom-4   left-5  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+              {cartNumber}
+            </div>
+            <FontAwesomeIcon fontSize={20} icon={faCartShopping} />
+            <span className="ml-3">20.561,10 MAD</span>
           </NavLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink exact="true" color="foreground" href="/contact">
-            Panier
-          </NavLink>
+
+          {/* Panier
+          </NavLink> */}
         </NavbarItem>
       </NavbarContent>
 

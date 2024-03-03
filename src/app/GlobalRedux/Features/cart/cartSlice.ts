@@ -14,7 +14,10 @@ const initialState = {
     },
   },
   // used elements
-  cart: {},
+  cart: {
+    arrissala: { ecritures: [], papeterie: [], organisation: [] },
+    aladnane: { ecritures: [], papeterie: [], organisation: [] },
+  },
   wishlist: {
     arrissala: { ecritures: [], papeterie: [], organisation: [] },
     aladnane: { ecritures: [], papeterie: [], organisation: [] },
@@ -52,7 +55,6 @@ export const cartSlice = createSlice({
         state.cart[chosenLibrary][type].push({
           ...book,
           quantity,
-       
         });
       }
     },
