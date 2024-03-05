@@ -6,7 +6,6 @@ import {
   toggleBookWishlist,
 } from "@/app/GlobalRedux/Features/cart/cartSlice";
 
-
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

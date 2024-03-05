@@ -2,12 +2,32 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { NavLink } from "@/components/navlink";
-import { isAddedToWishlist } from "@/utils/cartUtils";
-import { Spinner } from "@nextui-org/react";
+import {
+  addToCart,
+  isAddedToWishlist,
+  removeFromCart,
+  toggleWishlist,
+} from "@/utils/cartUtils";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import {
+  faShield,
+  faShieldHalved,
+  faTruck,
+  faHeart as fasHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faAngleLeft,
+  faMinus,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { addOrModifyBookInCart } from "@/app/GlobalRedux/Features/cart/cartSlice";
+import { debounce } from "@/utils/input";
 
 export default function Item({ params }) {
   const dispatch = useDispatch();
@@ -15,35 +35,46 @@ export default function Item({ params }) {
   const type = params.itemsClass;
   const bookId = params.itemId;
   const cart = useSelector((state) => state.cart.cart);
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [item, setItem] = useState();
   const tdStyles = {
     borderBottom: "1px solid #ccc",
   };
+
+  async function gettingData() {
+    setIsLoading(true); // Assume setIsLoading is a state setter function defined in your component
+
+    try {
+      const response = await fetch(
+        `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok"); // Throws an error if response is not 2xx
+      }
+      const data = await response.json();
+      const ele = data.books.find((item) => item?.id === +bookId);
+      if (!ele) {
+        throw new Error("Item not found"); // Handle case where the item is not found
+      }
+      setItem(ele); // Assume setItem is a state setter function defined in your component
+      setQuantity(
+        cart[chosenLibrary][type]?.find((e) => {
+          return ele?.id === ele?.id;
+        })?.quantity || 0
+      );
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      alert("error: " + error.message); // Display the error message
+    } finally {
+      setIsLoading(false); // Ensure loading state is updated in both success and error cases
+    }
+  }
   useEffect(() => {
-    setIsloading(true);
-    // Step 2: Fetch the data
-    fetch(
-      `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const ele = data.books.find((item) => {
-          return item?.id === +bookId || -1;
-        });
-        console.log(ele);
+    gettingData();
+  }, []);
 
-        setItem(ele);
-        setIsloading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        alert("error");
-        setIsloading(false); // An error occurred, stop loading
-      });
-  }, [chosenLibrary, type, bookId]);
+  const [quantity, setQuantity] = useState(0);
 
-  const quantity = 1;
   // Define your details data as an array of objects
   const details = [
     { label: "Categorie", value: "Livres" },
@@ -57,6 +88,11 @@ export default function Item({ params }) {
   ];
 
   const wishlist = useSelector((state) => state.cart.wishlist);
+  const booksInCategory = cart[chosenLibrary]?.[type] ?? [];
+  const addedToCart =
+    booksInCategory?.some((element) => {
+      return element?.id === +item?.id;
+    }) || false;
 
   const addedToWishlist = isAddedToWishlist(
     wishlist,
@@ -64,6 +100,31 @@ export default function Item({ params }) {
     chosenLibrary,
     type
   );
+  // const updateQuantity = debounce((newQuantity) => {
+  //   setQuantity(newQuantity);
+  //   // Here, you might also want to dispatch to your Redux store
+  //   // Ensure to include validation if newQuantity is within allowed range
+  // }, 500); // 500 ms delay
+  const handleQuantityChange = (e) => {
+    const newQuantity = parseInt(e.target.value, 10); // Parse the input value to an integer
+    if (
+      !isNaN(newQuantity) &&
+      newQuantity >= 0 &&
+      newQuantity <= item?.maxQuantity
+    ) {
+      setQuantity(newQuantity); // Update local state
+      // Dispatch an action to update Redux store, adjusted to use the new quantity
+      dispatch(
+        addOrModifyBookInCart({
+          book: item,
+          type,
+          chosenLibrary,
+          quantity: newQuantity,
+        })
+      );
+    }
+  };
+
   return (
     <section className="bg-myContent">
       {isLoading ? (
@@ -78,30 +139,31 @@ export default function Item({ params }) {
 
             <div className="w-full lg:w-5/12 py-3">
               <NavLink
-                href={`/library-intro/${chosenLibrary}`}
-                className="lg:text-lg capitalize text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                href={`/${chosenLibrary}`}
+                className="capitalize font-bold text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                 aria-label={`go back  to ${chosenLibrary} library introduction`}
               >
                 {chosenLibrary}
               </NavLink>
               {/* Use an aria-hidden arrow for visual users, but it's hidden from screen readers */}
-              <span aria-hidden="true" className="mx-2 lg:text-2xl">
+              <span aria-hidden="true" className="mx-2 text-sm ">
                 &gt;
               </span>
               <NavLink
-                href={`/library-intro/${chosenLibrary}/${type}`}
-                className="lg:text-lg capitalize text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                href={`/${chosenLibrary}/${type}`}
+                className=" capitalize font-bold text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                 aria-label={`go back  to ${type} `}
               >
                 {type}
               </NavLink>
 
-              <span aria-hidden="true" className="mx-2 lg:text-2xl">
+              <span
+                aria-hidden="true"
+                className="text-gray-900 mx-2  capitalize"
+              >
                 &gt;
               </span>
-              <span className="text-gray-900 lg:text-lg capitalize">
-                {item?.title}
-              </span>
+              <span className="text-gray-900 capitalize">{item?.title}</span>
             </div>
           </div>
 
@@ -113,20 +175,24 @@ export default function Item({ params }) {
                   {/* Heart icon for adding to wishlist */}
                   <div className="relative pb-4 pt-2">
                     <button
-                      onClick={() => handleToggleWishlist()}
-                      className="absolute bg-transparent  p-1 left-0 top-0 text-myHeartColor z-10 outline-none hover:border-color-none"
+                      onClick={() => {
+                        toggleWishlist(dispatch, item, chosenLibrary, type);
+                      }}
+                      className="absolute bg-transparent p-1 left-0 top-0 text-myHeartColor z-10 outline-none hover:border-color-none"
                       aria-label={
                         addedToWishlist
                           ? "Remove from wishlist"
                           : "Add to wishlist"
                       }
                     >
-                      <i
-                        className={`fa-regular ${
-                          addedToWishlist ? "fa-solid" : ""
-                        }
-                         fa-heart text-[25px] my-heart hover:text-[28px] duration-200 `}
-                      ></i>
+                      {addedToWishlist ? (
+                        <FontAwesomeIcon icon={fasHeart} className="text-xl" />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={farHeart}
+                          className="text-xl  "
+                        />
+                      )}
                     </button>
                   </div>
                   {item && item.imgSrc && (
@@ -141,9 +207,9 @@ export default function Item({ params }) {
                         centeredSlides={true}
                         slidesPerView={"auto"}
                         coverflowEffect={{
-                          rotate: -10,
+                          rotate: 0,
                           stretch: 10,
-                          depth: 250,
+                          depth: 200,
                           modifier: 2.5,
                         }}
                         pagination={{
@@ -169,12 +235,18 @@ export default function Item({ params }) {
                         ))}
                         <div className="slider-controller flex justify-between items-center">
                           <div className="swiper-button-prev slider-arrow cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full p-2 !h-[44px] !w-[44px]">
-                            <i className="fa-solid fa-angles-right rotate-180 text-3xl text-gray-800"></i>
+                            <FontAwesomeIcon
+                              icon={faAngleLeft}
+                              className=" text-gray-800 text-3xl "
+                            />
                           </div>
                           <div className="swiper-pagination"></div>{" "}
                           {/* Unstyled, add your classes */}
-                          <div className="swiper-button-next slider-arrow cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full p- !h-[44px] !w-[44px]">
-                            <i className="fa-solid fa-angles-right text-3xl text-gray-800"></i>
+                          <div className="swiper-button-next slider-arrow cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full p-2 !h-[44px] !w-[44px]">
+                            <FontAwesomeIcon
+                              icon={faAngleLeft}
+                              className=" rotate-180 text-gray-800 text-3xl "
+                            />
                           </div>
                         </div>
                       </Swiper>
@@ -334,60 +406,79 @@ export default function Item({ params }) {
                 {/* Quantity Selector */}
                 <div className="flex items-center gap-2 mb-4 justify-center flex-col">
                   <span className="text-myHeartColor">Votre Quantité</span>
-                  <div className="flex flex-row ">
-                    <button
-                      className={`text-lg px-3 mx-3 py-1 border rounded border-black ${
+                  <div className="flex flex-row  items-baseline mt-1">
+                    <Button
+                      className={`text-lg !min-w-2 px-2 !h-[29px] !min-h-0 mx-3 py-1 border rounded border-black ${
                         quantity > 0 ? "bg-white" : "bg-gray-200 border-none"
                       }`}
-                      onClick={() =>
-                        handleQuantityChange(
-                          quantity > 0 ? quantity - 1 : quantity
-                        )
-                      }
+                      disabled={quantity === 0}
+                      onClick={() => {
+                        if (quantity > 1) {
+                          const newQuantity = quantity - 1;
+                          addToCart(
+                            dispatch,
+                            item,
+                            chosenLibrary,
+                            type,
+                            newQuantity
+                          );
+                          setQuantity((prevQuantity) => prevQuantity - 1);
+                        } else if (quantity === 1) {
+                          setQuantity(0);
+                          removeFromCart(
+                            dispatch,
+                            item?.id,
+                            chosenLibrary,
+                            type
+                          );
+                        }
+                      }}
                     >
-                      <i className="fa-solid fa-minus"></i>
-                    </button>
+                      <FontAwesomeIcon icon={faMinus} />
+                    </Button>
                     <input
                       type="number"
-                      className="w-[55px] text-center mx-3 border-b-2 outline-none"
+                      className="w-[55px] text-center mx-3 border-b-2 py-1 outline-none"
                       value={quantity}
-                      onChange={(e) => {
-                        const newQuantity = parseInt(e.target.value, 10); // Parse the input value to an integer
-
-                        if (!isNaN(newQuantity)) {
-                          // Check if the parsed value is a number
-                          if (newQuantity > item?.maxQuantity) {
-                            // If entered quantity is more than max, set it to max
-                            handleQuantityChange(item?.maxQuantity);
-                          } else if (newQuantity < 0) {
-                            // If entered quantity is less than 0, set it to 0
-                            handleQuantityChange(0);
-                          } else {
-                            // Otherwise, set it to the entered value
-                            handleQuantityChange(newQuantity);
-                          }
-                        } else {
-                          // If entered value is not a number, set quantity to 0
-                          handleQuantityChange(0);
-                        }
-                      }}
-                      min={0}
+                      onChange={handleQuantityChange}
+                      max={item?.maxQuantity}
                     />
 
-                    <button
-                      className="text-lg px-3 ml-3 py-1 border rounded bg-white border-black flex items-center justify-center"
+                    <Button
+                      className={`text-lg !min-w-2 px-2 !h-[29px] !min-h-0 mx-3 py-1 border rounded border-black ${
+                        quantity < item?.maxQuantity
+                          ? "bg-white"
+                          : "bg-gray-200 border-none"
+                      }`}
+                      disabled={quantity === item?.maxQuantity || false}
                       onClick={() => {
                         if (quantity < item?.maxQuantity) {
-                          handleQuantityChange(quantity + 1);
+                          const newQuantity = quantity + 1;
+                          // dispatch(
+                          //   addOrModifyBookInCart({
+                          //     book: item, // The item prop passed to the ItemCard component
+                          //     type,
+                          //     chosenLibrary,
+                          //     newQuantity,
+                          //   })
+                          // );
+                          addToCart(
+                            dispatch,
+                            item,
+                            chosenLibrary,
+                            type,
+                            newQuantity
+                          );
+                          setQuantity((prevQuantity) => prevQuantity + 1);
                         }
                       }}
                     >
-                      <i className="fa-solid fa-plus"></i>
-                    </button>
+                      <FontAwesomeIcon icon={faPlus} />
+                    </Button>
                   </div>
                 </div>
                 <div className="mb-4  p-3 flex items-center justify-center ">
-                  <div className="w-6/12 border rounded-sm py-3  text-[#777]">
+                  <div className="w-6/12 border rounded-sm py-3  text-[#777] text-center">
                     {" "}
                     Quantité max :{" "}
                     <span className="font-semibold"> {item?.maxQuantity}</span>
@@ -400,18 +491,21 @@ export default function Item({ params }) {
                     className="flex items-center text-purple-600"
                     href={"/commandearrivera"}
                   >
-                    <i className="fas fa-truck mr-2"></i>
+                    <FontAwesomeIcon icon={faTruck} className="text-xl mr-2" />
                     Quand ma commande arrivera ?
                   </Link>
                   <Link
                     className="flex items-center text-green-600 cursor-pointer"
                     href={"/wishlist"}
                   >
-                    <i className="far fa-heart mr-2"></i>
+                    <FontAwesomeIcon icon={farHeart} className="text-xl mr-2" />
                     Voir la liste d'envies
                   </Link>
                   <div className="flex items-center text-gray-600">
-                    <i className="fas fa-shield-alt mr-2"></i>
+                    <FontAwesomeIcon
+                      icon={faShieldHalved}
+                      className="text-xl mr-2"
+                    />
                     3D Secured Payment by Card
                   </div>
                 </div>
@@ -436,7 +530,7 @@ export default function Item({ params }) {
                   <tr key={index}>
                     <th
                       scope="row"
-                      className={` text-gray-500 font-normal`}
+                      className={` text-gray-500 font-normal p-2`}
                       style={tdStyles}
                     >
                       {detail.label}

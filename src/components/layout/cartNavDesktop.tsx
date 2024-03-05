@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import {
   getTotalBooksInCart,
   getTotalBooksInWishlist,
+  getTotalPriceInCart,
 } from "@/utils/cartUtils";
 const AcmeLogo = () => (
   <>
@@ -83,6 +84,8 @@ export default function CartNavDesktop() {
   const wishlist = useSelector((state) => state.cart.wishlist);
 
   const cart = useSelector((state) => state.cart.cart);
+  
+  const totalPrice = getTotalPriceInCart(cart);
 
   const cartNumber = getTotalBooksInCart(cart)?.length;
 
@@ -193,7 +196,7 @@ export default function CartNavDesktop() {
               {cartNumber}
             </div>
             <FontAwesomeIcon fontSize={20} icon={faCartShopping} />
-            <span className="ml-3">20.561,10 MAD</span>
+            <span className="ml-3">{totalPrice} MAD</span>
           </NavLink>
 
           {/* Panier

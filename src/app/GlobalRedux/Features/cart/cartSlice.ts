@@ -29,7 +29,6 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addOrModifyBookInCart: (state, action) => {
-      console.log("adding or modifying");
       const { book, type, chosenLibrary, quantity } = action.payload;
 
       // Initialize library in cart if not existent

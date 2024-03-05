@@ -370,7 +370,7 @@ export default function Items({}) {
         <div className="flex flex-row items-center justify-end flex-wrap ">
           <div className="w-full lg:w-1/2 py-3 lg:py-0 text-center ">
             <NavLink
-              href={`/library-intro/${chosenLibrary}`}
+              href={`/${chosenLibrary}`}
               className="capitalize font-bold text-black hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
               aria-label={`go back  to ${chosenLibrary} library introduction`}
             >
