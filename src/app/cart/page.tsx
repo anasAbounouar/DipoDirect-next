@@ -37,6 +37,8 @@ export default function Cart() {
     ecrituresItems,
     organisationItems,
   } = useCartItems(cart);
+  const renderEmptyCard = <p>Please add something to your cart </p>;
+  if (!supplier) return renderEmptyCard;
 
   const [types, setTypes] = useState([
     {
@@ -70,7 +72,7 @@ export default function Cart() {
       {
         name: "organisation",
         items: organisationItems,
-        color: "myTurquoise",
+        color: "myTealBlue",
         displayed: true,
       },
     ]);
@@ -100,7 +102,7 @@ export default function Cart() {
 
   return (
     <div>
-      <div className="my-3 p-3 text-center">
+      <div className="p-3 text-center">
         <span className="text-lg  ">Fournisseur</span> :{" "}
         <strong className="mx-1 capitalize text-lg"> {supplier}</strong>
       </div>
@@ -143,8 +145,6 @@ export default function Cart() {
           (type) =>
             type.items.length > 0 && (
               <div className="mx-4 lg:mx-11 my-4">
-                hhh
-                {type.name.charAt(0).toLocaleUpperCase() + type.name.slice(1)}
                 <MyButton
                   text={
                     type.name.charAt(0).toLocaleUpperCase() + type.name.slice(1)
@@ -165,7 +165,7 @@ export default function Cart() {
                 {type.displayed && (
                   <>
                     {" "}
-                    <div className="flex flex-row items-center flex-wrap gap-1 justify-around">
+                    <div className="flex flex-row items-center flex-wrap gap-1 justify-between">
                       {type.items.map((item) => (
                         <ShoppingItem
                           key={item.id}

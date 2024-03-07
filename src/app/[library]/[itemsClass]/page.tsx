@@ -337,7 +337,7 @@ export default function Items({}) {
   };
   return (
     <section id="intern" className={`relative pb-4 bg-myContent  pt-7`}>
-      {/* <CartNavDesktop /> */}
+    
       {showFilter() && (
         <SideFilter
           babyLevels={babyLevels}

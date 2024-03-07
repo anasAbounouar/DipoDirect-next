@@ -70,9 +70,9 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
 
   return (
     <div className={`w-5/12 lg:w-2/12 m-1 bg-white`} style={card}>
-      <div className="px-1">
+      <div className="px-1 flex flex-col h-full justify-between    align-baseline">
         {/* Heart icon for adding to wishlist */}
-        <div className="relative pb-4 pt-2">
+        <div className="relative pb-4 pt-2 ">
           <button
             onClick={() => {
               toggleWishlist(dispatch, item, chosenLibrary, type);
@@ -157,10 +157,10 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
           </div>
 
           {/* Action Panel */}
-          <div className="flex items-center p-2 justify-between actionPanier gap-3">
+          <div className="m-2 flex  items-center justify-center">
             <Button
               onClick={handleAddingOrRemoving}
-              className={`btn addToCartBtn    bg-[#004494]    text-white  ajouter ${
+              className={`btn w-11/12 rounded-lg    bg-[#004494]    text-white   ${
                 addedToCart ? "addedToCartClass" : ""
               }  ${addedToCart ? "bg-myBrand" : ""}`}
               aria-pressed={addedToCart} // Indicates the state of the button

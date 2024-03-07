@@ -127,6 +127,7 @@ export default function Item({ params }) {
 
   return (
     <section className="bg-myContent">
+      <Link href="/cart">cart</Link>
       {isLoading ? (
         <div role="alert" aria-busy="true">
           <Spinner /> {/* Use a loading spinner component */}

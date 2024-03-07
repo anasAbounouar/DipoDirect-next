@@ -20,15 +20,17 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faBell, faHeart, faUser } from "@fortawesome/free-regular-svg-icons";
 import { useSelector } from "react-redux";
 import {
   getTotalBooksInCart,
   getTotalBooksInWishlist,
   getTotalPriceInCart,
 } from "@/utils/cartUtils";
+import { useClerk, useUser } from "@clerk/nextjs";
+
 const AcmeLogo = () => (
   <>
     <Image
@@ -65,7 +67,10 @@ const Nav = styled(Navbar)`
 `;
 
 export default function CartNavDesktop() {
+  const { signOut } = useClerk();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isSignedIn, user, isLoaded } = useUser();
 
   const path = usePathname();
   useEffect(() => {
@@ -84,7 +89,7 @@ export default function CartNavDesktop() {
   const wishlist = useSelector((state) => state.cart.wishlist);
 
   const cart = useSelector((state) => state.cart.cart);
-  
+
   const totalPrice = getTotalPriceInCart(cart);
 
   const cartNumber = getTotalBooksInCart(cart)?.length;
@@ -207,28 +212,48 @@ export default function CartNavDesktop() {
       <NavbarContent as="div" justify="end">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <Avatar
-              isBordered
-              as="button"
-              className="transition-transform"
-              color="secondary"
-              name="Jason Hughes"
-              size="sm"
-              src="/assets/avatar.png"
-            />
+            {isSignedIn ? (
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src="/assets/avatar.png"
+              />
+            ) : (
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src="/assets/login/unkownPerson.webp"
+              />
+            )}
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">anass.abounouar@gmail.com</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem
+              key="settings"
+              onClick={() => {
+                console.log("settings");
+                router.push("/user");
+              }}
+            >
+              My Settings
+            </DropdownItem>
             <DropdownItem key="team_settings">Team Settings</DropdownItem>
             <DropdownItem key="analytics">Analytics</DropdownItem>
             <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem key="logout" color="danger" onClick={() => signOut(() => router.push("/"))}>
               Log Out
             </DropdownItem>
           </DropdownMenu>

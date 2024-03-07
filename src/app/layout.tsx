@@ -22,6 +22,7 @@ import { Providers } from "./providers";
 import Footer from "@/components/layout/footer";
 import { ReduxProvider } from "./GlobalRedux/provider";
 import Link from "next/link";
+import { ClerkProvider } from "@clerk/nextjs";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,13 +32,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Link rel="icon" href={"/assets/logo.png"} sizes="70x32" />
-        <ReduxProvider>
-          <Providers>
-            <Navbar />
-            {children}
-            <Footer />
-          </Providers>
-        </ReduxProvider>
+        <ClerkProvider>
+          <ReduxProvider>
+            <Providers>
+              <Navbar />
+              {children}
+              <Footer />
+            </Providers>
+          </ReduxProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
