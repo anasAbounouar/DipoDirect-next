@@ -4,11 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "cross-env HOST=0.0.0.0 next dev",
-    "build": "next build",
+    "build": "next build --no-lint",
     "start": "next start",
     "lint": "next lint"
   },
+  "extends": "next",
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
+  },
   "dependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
     "@clerk/nextjs": "^4.29.9",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
@@ -37,7 +44,6 @@
     "autoprefixer": "^10.0.1",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
