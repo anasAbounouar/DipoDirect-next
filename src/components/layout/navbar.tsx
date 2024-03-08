@@ -16,6 +16,7 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Button,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import {
@@ -29,6 +30,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import Cart from "@/app/cart/page";
+import MyButton from "../common/myButton";
 const AcmeLogo = () => (
   <>
     <Image
@@ -192,7 +194,15 @@ export default function App() {
       </SignedIn>
       <SignedOut>
         {/* Signed out users get sign in button */}
-        <SignInButton />
+        <SignInButton>
+          <MyButton
+            height="30"
+            text="sign-in"
+            className="bg-myBrand text-white"
+          >
+            Sign in
+          </MyButton>
+        </SignInButton>
       </SignedOut>
 
       {/* {isLoaded && isSignedIn && <UserButton showName={false} />} */}

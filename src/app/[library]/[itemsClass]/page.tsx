@@ -337,7 +337,6 @@ export default function Items({}) {
   };
   return (
     <section id="intern" className={`relative pb-4 bg-myContent  pt-7`}>
-    
       {showFilter() && (
         <SideFilter
           babyLevels={babyLevels}
@@ -452,7 +451,7 @@ export default function Items({}) {
               />
             </div>
           ) : displayedItems.length === 0 ? (
-            <h2 className="font-bold text-xl mt-9">
+            <h2 className="font-bold text-xl mt-9 text-center">
               Pas de Resulat qui correspond a votre recherche :/
             </h2>
           ) : (

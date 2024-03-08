@@ -16,7 +16,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import PromoteSection from "@/components/features/promoteSection";
-import { getAuthenticationData } from "./login/authenticationData";
+
 // import { Loading as Spinner } from '@nextui-org/react'
 
 const MosqueSection = styled.section`
@@ -27,9 +27,7 @@ const MosqueSection = styled.section`
   overflow: hidden; // Prevents the image from overflowing the container
 `;
 
-export default async function Home() {
-  const imageInput = useRef();
-
+export default function Home() {
   const router = useRouter(); // Use the useRouter hook
   const [selectedOption, setSelectedOption] = useState(
     "__choisir un fournisseur"
@@ -51,7 +49,6 @@ export default async function Home() {
     router.push(`/${optionValue}`); // Wait for router.push to complete
   };
   const [user, setUser] = useState();
-
 
   return (
     <main>

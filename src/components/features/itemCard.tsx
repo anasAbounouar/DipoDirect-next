@@ -14,6 +14,7 @@ import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 import { Button } from "@nextui-org/react";
 import { removeFromCart, toggleWishlist, addToCart } from "@/utils/cartUtils";
+import { useState } from "react";
 // import styles from "./ItemCard.module.scss";:
 const card = {
   borderRadius: "10px",
@@ -22,6 +23,7 @@ const card = {
 };
 const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const cart = useSelector((state) => state.cart.cart);
 
@@ -159,28 +161,23 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
           {/* Action Panel */}
           <div className="m-2 flex  items-center justify-center">
             <Button
-              onClick={handleAddingOrRemoving}
-              className={`btn w-11/12 rounded-lg    bg-[#004494]    text-white   ${
-                addedToCart ? "addedToCartClass" : ""
-              }  ${addedToCart ? "bg-myBrand" : ""}`}
-              aria-pressed={addedToCart} // Indicates the state of the button
+              isLoading={isLoading}
+              onClick={() => {
+                setIsLoading(true);
+                handleAddingOrRemoving();
+                setIsLoading(false);
+              }}
+              className={`btn w-11/12 rounded-lg bg-[#004494] text-white ${addedToCart ? "bg-myBrand" : ""}`}
+              aria-pressed={addedToCart}
             >
-              <span className="sr-only">
-                {addedToCart
-                  ? "Item has been added to the cart"
-                  : "Add item to the cart"}
-              </span>
-              <span aria-hidden="true" className={`text-white `}>
-                {/* Visually hidden text for screen readers */}
-                {addedToCart ? (
-                  "Bien ajouté ✓"
-                ) : (
-                  <span>
-                    + Ajouter au panier
-                    <FontAwesomeIcon icon={faShoppingCart} />
-                  </span>
-                )}
-              </span>
+              {isLoading
+                ? "Loading..."
+                : addedToCart
+                  ? "Bien ajouté ✓"
+                  : "+ Ajouter au panier"}
+              {!isLoading && (
+                <FontAwesomeIcon icon={faShoppingCart} className="ml-2" />
+              )}
             </Button>
           </div>
         </div>

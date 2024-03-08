@@ -5,7 +5,12 @@ import { NavLink } from "../navlink";
 // import Link from 'next/link';
 import styled from "styled-components";
 import { Button } from "@nextui-org/react";
-import { faCartShopping, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBagShopping,
+  faCartShopping,
+  faRightFromBracket,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@nextui-org/react";
 // import { SearchIcon } from "./SearchIcon";
 import {
@@ -29,7 +34,8 @@ import {
   getTotalBooksInWishlist,
   getTotalPriceInCart,
 } from "@/utils/cartUtils";
-import { useClerk, useUser } from "@clerk/nextjs";
+import { SignedIn, useClerk, useUser, useSignIn } from "@clerk/nextjs";
+import { EmailAddress } from "@clerk/nextjs/server";
 
 const AcmeLogo = () => (
   <>
@@ -67,12 +73,15 @@ const Nav = styled(Navbar)`
 `;
 
 export default function CartNavDesktop() {
-  const { signOut } = useClerk();
+  const path = usePathname();
+  const isHomePath = path === "/";
+
+  const { signOut, openSignIn } = useClerk();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const { isSignedIn, user, isLoaded } = useUser();
+  const userEmail = user?.emailAddresses[0].emailAddress;
 
-  const path = usePathname();
   useEffect(() => {
     const handleScroll = () => {
       // Set isScrolled to true if page is scrolled more than 50 pixels, for example
@@ -109,63 +118,90 @@ export default function CartNavDesktop() {
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem
-          style={{
-            transition: "opacity 1.5s ease, visibility 0.5s",
-            opacity: isScrolled ? 0 : 1,
-            visibility: isScrolled ? "hidden" : "visible",
-          }}
-        >
-          <form
-            className="flex relative items-center justify-center "
-            role="search"
-            id="rechercheGenerale"
-          >
-            <Input
-              size="sm"
-              isClearable
-              radius="lg"
-              classNames={{
-                label: "text-black/50 dark:text-white/90",
-                input: [
-                  "bg-transparent",
-                  "text-black/90 dark:text-white/90",
-                  "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                ],
-                innerWrapper: "bg-transparent",
-                inputWrapper: [
-                  "shadow-xl",
-                  "bg-default-200/50",
-                  "dark:bg-default/60",
-                  "backdrop-blur-xl",
-                  "backdrop-saturate-200",
-                  "hover:bg-default-200/70",
-                  "dark:hover:bg-default/70",
-                  "group-data-[focused=true]:bg-default-200/50",
-                  "dark:group-data-[focused=true]:bg-default/60",
-                  "!cursor-text",
-                ],
-              }}
-              placeholder="--Recherche generale"
-              startContent={<FontAwesomeIcon icon={faSearch} />}
-            />
-            {/* <Button className="" type="submit"></Button> */}
-          </form>
-        </NavbarItem>
-        <NavbarItem>
-          <NavLink
-            exact="true"
-            color="foreground"
-            href="/"
-            className=" flex items-center flex-col justify-center"
-          >
-            <FontAwesomeIcon icon={faBell} fontSize={20} />
-            <span className="text-xs"> Notification</span>
-          </NavLink>
-        </NavbarItem>
+        {isHomePath && (
+          <>
+            <NavbarItem>
+              <NavLink exact="true" color="foreground" href="/">
+                Acceuil
+              </NavLink>
+            </NavbarItem>
+            <NavbarItem>
+              <NavLink
+                exact="true"
+                href="/about"
+                aria-current="page"
+                color="secondary"
+              >
+                A propos
+              </NavLink>
+            </NavbarItem>
+            <NavbarItem>
+              <NavLink exact="true" color="foreground" href="/contact">
+                Contact
+              </NavLink>
+            </NavbarItem>
+          </>
+        )}
 
-        <NavbarItem>
-          {/* <NavLink
+        {!isHomePath && (
+          <>
+            {" "}
+            <NavbarItem
+              style={{
+                transition: "opacity 1.5s ease, visibility 0.5s",
+                opacity: isScrolled ? 0 : 1,
+                visibility: isScrolled ? "hidden" : "visible",
+              }}
+            >
+              <form
+                className="flex relative items-center justify-center "
+                role="search"
+                id="rechercheGenerale"
+              >
+                <Input
+                  size="sm"
+                  isClearable
+                  radius="lg"
+                  classNames={{
+                    label: "text-black/50 dark:text-white/90",
+                    input: [
+                      "bg-transparent",
+                      "text-black/90 dark:text-white/90",
+                      "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                    ],
+                    innerWrapper: "bg-transparent",
+                    inputWrapper: [
+                      "shadow-xl",
+                      "bg-default-200/50",
+                      "dark:bg-default/60",
+                      "backdrop-blur-xl",
+                      "backdrop-saturate-200",
+                      "hover:bg-default-200/70",
+                      "dark:hover:bg-default/70",
+                      "group-data-[focused=true]:bg-default-200/50",
+                      "dark:group-data-[focused=true]:bg-default/60",
+                      "!cursor-text",
+                    ],
+                  }}
+                  placeholder="--Recherche generale"
+                  startContent={<FontAwesomeIcon icon={faSearch} />}
+                />
+                {/* <Button className="" type="submit"></Button> */}
+              </form>
+            </NavbarItem>
+            <NavbarItem>
+              <NavLink
+                exact="true"
+                color="foreground"
+                href="/"
+                className=" flex items-center flex-col justify-center"
+              >
+                <FontAwesomeIcon icon={faBell} fontSize={20} />
+                <span className="text-xs"> Notification</span>
+              </NavLink>
+            </NavbarItem>
+            <NavbarItem>
+              {/* <NavLink
             exact="true"
             href="/about"
             aria-current="page"
@@ -175,38 +211,39 @@ export default function CartNavDesktop() {
             <FontAwesomeIcon icon={faHeart} fontSize={20} />
             <span> Wishlist</span>
           </NavLink> */}
-          <NavLink
-            exact="true"
-            className="relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
-            aria-label={`wishlist ${wishlist}`}
-            href="/wishlist"
-          >
-            <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
-              {wishlistNumber}
-            </div>
-            <FontAwesomeIcon icon={faHeart} fontSize={20} />
-          </NavLink>
-          <span className="text-xs"> Wishlist</span>
-        </NavbarItem>
+              <NavLink
+                exact="true"
+                className="relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+                aria-label={`wishlist ${wishlist}`}
+                href="/wishlist"
+              >
+                <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                  {wishlistNumber}
+                </div>
+                <FontAwesomeIcon icon={faHeart} fontSize={20} />
+              </NavLink>
+              <span className="text-xs"> Wishlist</span>
+            </NavbarItem>
+            <NavbarItem>
+              {/* <NavLink exact="true" color="foreground" href="/contact"> */}
+              <NavLink
+                exact="true"
+                className="nav-link relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
+                aria-label="Shopping Cart. 0 items"
+                href="/cart"
+              >
+                <div className="shop-counter absolute bottom-4   left-5  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                  {cartNumber}
+                </div>
+                <FontAwesomeIcon fontSize={20} icon={faCartShopping} />
+                <span className="ml-3">{totalPrice} MAD</span>
+              </NavLink>
 
-        <NavbarItem>
-          {/* <NavLink exact="true" color="foreground" href="/contact"> */}
-          <NavLink
-            exact="true"
-            className="nav-link relative flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-300"
-            aria-label="Shopping Cart. 0 items"
-            href="/cart"
-          >
-            <div className="shop-counter absolute bottom-4   left-5  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
-              {cartNumber}
-            </div>
-            <FontAwesomeIcon fontSize={20} icon={faCartShopping} />
-            <span className="ml-3">{totalPrice} MAD</span>
-          </NavLink>
-
-          {/* Panier
+              {/* Panier
           </NavLink> */}
-        </NavbarItem>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
 
       <NavbarContent as="div" justify="end">
@@ -235,27 +272,52 @@ export default function CartNavDesktop() {
             )}
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">anass.abounouar@gmail.com</p>
+            {isSignedIn ? (
+              <DropdownItem key="profile" className="h-14 gap-2">
+                <p className="font-semibold">Signed in as</p>
+                <p className="font-semibold">{userEmail}</p>
+              </DropdownItem>
+            ) : (
+              <DropdownItem key="profile" onClick={() => openSignIn()}>
+                <FontAwesomeIcon icon={faUser} />
+                <span className="font-semibold ml-1">Log in</span>
+              </DropdownItem>
+            )}
+            <DropdownItem key="my-orders">
+              {" "}
+              <FontAwesomeIcon icon={faBagShopping} />
+              <span className="ml-1">My orders</span>
             </DropdownItem>
-            <DropdownItem
-              key="settings"
-              onClick={() => {
-                console.log("settings");
-                router.push("/user");
-              }}
-            >
-              My Settings
+            <DropdownItem key="dashboard">
+              <div className="flex flex-row items-baseline">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M17 8h1v11H2V8h1V6c0-2.76 2.24-5 5-5c.71 0 1.39.15 2 .42A4.94 4.94 0 0 1 12 1c2.76 0 5 2.24 5 5zM5 6v2h2V6c0-1.13.39-2.16 1.02-3H8C6.35 3 5 4.35 5 6m10 2V6c0-1.65-1.35-3-3-3h-.02A4.98 4.98 0 0 1 13 6v2zm-5-4.22C9.39 4.33 9 5.12 9 6v2h2V6c0-.88-.39-1.67-1-2.22"
+                  />
+                </svg>
+                <span className="ml-1">Dashboard</span>
+              </div>
             </DropdownItem>
-            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-            <DropdownItem key="analytics">Analytics</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="configurations">Configurations</DropdownItem>
-            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={() => signOut(() => router.push("/"))}>
-              Log Out
+            <DropdownItem key="wishlist" color="success">
+              <FontAwesomeIcon icon={faHeart} fontSize={20} />{" "}
+              <span>Wishlist</span>
             </DropdownItem>
+            {isSignedIn === true && (
+              <DropdownItem
+                key="logout"
+                color="danger"
+                onClick={() => signOut(() => router.push("/"))}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} />
+                <span className="ml-1">Log out</span>
+              </DropdownItem>
+            )}
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>

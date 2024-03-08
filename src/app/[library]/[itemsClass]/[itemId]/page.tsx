@@ -127,9 +127,8 @@ export default function Item({ params }) {
 
   return (
     <section className="bg-myContent">
-      <Link href="/cart">cart</Link>
       {isLoading ? (
-        <div role="alert" aria-busy="true">
+        <div role="alert" aria-busy="true" className="text-center h-full">
           <Spinner /> {/* Use a loading spinner component */}
           <span className="sr-only">Loading...</span>
         </div>
@@ -455,14 +454,7 @@ export default function Item({ params }) {
                       onClick={() => {
                         if (quantity < item?.maxQuantity) {
                           const newQuantity = quantity + 1;
-                          // dispatch(
-                          //   addOrModifyBookInCart({
-                          //     book: item, // The item prop passed to the ItemCard component
-                          //     type,
-                          //     chosenLibrary,
-                          //     newQuantity,
-                          //   })
-                          // );
+
                           addToCart(
                             dispatch,
                             item,
