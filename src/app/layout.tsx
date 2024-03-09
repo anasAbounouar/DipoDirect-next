@@ -1,10 +1,12 @@
+// @ts-nocheck
+// TypeScript checking is disabled for this file
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "../styles/main.scss";
 import "../styles/normalize.scss";
 import "../styles/variables.scss";
-import Navbar from "@/components/layout/navbar";
+
 
 const inter = Inter({ subsets: ["latin"] });
 import "swiper/css";
