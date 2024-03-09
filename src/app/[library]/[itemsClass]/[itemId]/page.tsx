@@ -34,7 +34,7 @@ export default function Item({ params }) {
   const chosenLibrary = params.library;
   const type = params.itemsClass;
   const bookId = params.itemId;
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state?.cart?.cart);
   const [isLoading, setIsLoading] = useState(false);
   const [item, setItem] = useState();
   const tdStyles = {
