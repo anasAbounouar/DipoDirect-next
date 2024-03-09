@@ -14,3 +14,18 @@ export const config = {
   // for more information about configuring your Middleware
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
+
+///////////////////////:update
+
+
+
+// import { clerkMiddleware } from "@clerk/nextjs/server";
+ 
+// export default clerkMiddleware();
+ 
+// export const config = {
+//   matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+// };
+
+//// thirs pudate
+
