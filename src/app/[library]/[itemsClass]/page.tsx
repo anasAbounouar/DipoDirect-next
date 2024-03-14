@@ -1,16 +1,16 @@
-"use client";
-import { NavLink } from "@/components/navlink";
-import { Input } from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+'use client';
+import { NavLink } from '@/components/navlink';
+import { Input } from '@nextui-org/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // import SelectComponent from '../../components/common/SelectComponent/SelectComponent';
-import SideFilter from "@/components/features/sideFilter";
+import SideFilter from '@/components/features/sideFilter';
 // import ItemCard from '../../components/features/ItemCard/ItemCard.tsx';
-import { useReducer } from "react";
+import { useReducer } from 'react';
 // import LoadingIndicator from '../../components/common/LoadingIndicator/LoadingIndicator.js';
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive';
 import {
   Button,
   Dropdown,
@@ -18,9 +18,9 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Spinner,
-} from "@nextui-org/react";
-import { useParams, useRouter } from "next/navigation";
-import ItemCard from "@/components/features/itemCard";
+} from '@nextui-org/react';
+import { useParams, useRouter } from 'next/navigation';
+import ItemCard from '@/components/features/itemCard';
 // import { addToCart, addToWishlist } from '../../data/CartManager.ts';
 // Custom hook to determine if the device is mobile based on screen width
 const useIsMobile = () => {
@@ -30,51 +30,51 @@ const useIsMobile = () => {
 // Reducer function to manage the state of various filters and UI elements
 function reducer(state, action) {
   switch (action.type) {
-    case "SELECT_LANGUAGE":
+    case 'SELECT_LANGUAGE':
       return {
         ...state,
         selectedLanguage: action.payload,
         currentPage: 1,
       };
-    case "SELECT_BABY_LEVEL":
+    case 'SELECT_BABY_LEVEL':
       return {
         ...state,
         selectedBabyLevel: action.payload,
-        selectedPrimaryLevel: "",
-        selectedMiddleSchoolLevel: "",
-        selectedHighSchoolLevel: "",
+        selectedPrimaryLevel: '',
+        selectedMiddleSchoolLevel: '',
+        selectedHighSchoolLevel: '',
         currentPage: 1,
       };
-    case "SELECT_PRIMARY_LEVEL":
+    case 'SELECT_PRIMARY_LEVEL':
       return {
         ...state,
         selectedPrimaryLevel: action.payload,
-        selectedBabyLevel: "",
-        selectedMiddleSchoolLevel: "",
-        selectedHighSchoolLevel: "",
+        selectedBabyLevel: '',
+        selectedMiddleSchoolLevel: '',
+        selectedHighSchoolLevel: '',
         currentPage: 1,
       };
-    case "SELECT_MIDDLE_SCHOOL_LEVEL":
+    case 'SELECT_MIDDLE_SCHOOL_LEVEL':
       return {
         ...state,
         selectedMiddleSchoolLevel: action.payload,
-        selectedBabyLevel: "",
-        selectedPrimaryLevel: "",
-        selectedHighSchoolLevel: "",
+        selectedBabyLevel: '',
+        selectedPrimaryLevel: '',
+        selectedHighSchoolLevel: '',
         currentPage: 1,
       };
-    case "SELECT_HIGH_SCHOOL_LEVEL":
+    case 'SELECT_HIGH_SCHOOL_LEVEL':
       return {
         ...state,
         selectedHighSchoolLevel: action.payload,
-        selectedBabyLevel: "",
-        selectedPrimaryLevel: "",
-        selectedMiddleSchoolLevel: "",
+        selectedBabyLevel: '',
+        selectedPrimaryLevel: '',
+        selectedMiddleSchoolLevel: '',
         currentPage: 1,
       };
-    case "INCREMENT_CURRENT_PAGE":
+    case 'INCREMENT_CURRENT_PAGE':
       return { ...state, currentPage: action.payload };
-    case "SEARCH_QUERY":
+    case 'SEARCH_QUERY':
       return {
         ...state,
         searchBooksInput: action.payload,
@@ -85,32 +85,32 @@ function reducer(state, action) {
   }
 }
 const initialFilterState = {
-  selectedLanguage: "0",
-  selectedBabyLevel: "",
-  selectedPrimaryLevel: "",
-  selectedMiddleSchoolLevel: "",
-  selectedHighSchoolLevel: "",
+  selectedLanguage: '0',
+  selectedBabyLevel: '',
+  selectedPrimaryLevel: '',
+  selectedMiddleSchoolLevel: '',
+  selectedHighSchoolLevel: '',
   // isSideBarActive: false,
   currentPage: 1,
-  searchBooksInput: "",
+  searchBooksInput: '',
 };
 
 //define levels
-const babyLevels = ["Tout", "Petite", "Moyenne", "Grande"];
-const primaryLevels = ["Tout", "CP", "CE1", "CE2", "CM1", "CM2"];
-const middleSchoolLevels = ["Tout", "1ère année", "2ème année", "3ème année"];
-const highSchoolLevels = ["Tout", "Tranc Commun", "1 Bac", "2 Bac"];
+const babyLevels = ['Tout', 'Petite', 'Moyenne', 'Grande'];
+const primaryLevels = ['Tout', 'CP', 'CE1', 'CE2', 'CM1', 'CM2'];
+const middleSchoolLevels = ['Tout', '1ère année', '2ème année', '3ème année'];
+const highSchoolLevels = ['Tout', 'Tranc Commun', '1 Bac', '2 Bac'];
 
 const typeOptions = [
-  { label: "Ecriture", value: "ecritures", id: 0 },
+  { label: 'Ecriture', value: 'ecritures', id: 0 },
   {
-    label: "Organisation",
-    value: "organisation",
+    label: 'Organisation',
+    value: 'organisation',
     id: 1,
   },
   {
-    label: "Papeterie",
-    value: "papeterie",
+    label: 'Papeterie',
+    value: 'papeterie',
     id: 2,
   },
 ];
@@ -123,8 +123,8 @@ export default function Items({}) {
   const router = useRouter();
 
   const params = useParams();
-  const chosenLibrary = params.library;
-  const type = params.itemsClass;
+  const chosenLibrary = params?.library;
+  const type = params?.itemsClass;
 
   const [state, dispatch] = useReducer(reducer, initialFilterState);
 
@@ -134,7 +134,7 @@ export default function Items({}) {
   // };
   // possibility to change {type}
 
-  const [selectType, setSelectType] = useState<string | undefined>(type); // Set state with type
+  const [selectType, setSelectType] = useState<string | string[]>(type); // Set state with type
 
   useEffect(() => {
     // Update the selectType when the URL parameter changes
@@ -152,13 +152,13 @@ export default function Items({}) {
   const [isLoading, setIsloading] = useState(false);
   const port = 3000;
   const handleSearchChange = useCallback((e) => {
-    dispatch({ type: "SEARCH_QUERY", payload: e.target.value });
+    dispatch({ type: 'SEARCH_QUERY', payload: e.target.value });
   }, []);
   useEffect(() => {
     setIsloading(true);
     // Step 2: Fetch the data
     fetch(
-      `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`
+      `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`,
     )
       .then((response) => response.json())
       .then((data) => {
@@ -167,8 +167,8 @@ export default function Items({}) {
         setIsloading(false);
       })
       .catch((error) => {
-        console.error("Error fetching data: ", error);
-        alert("error");
+        console.error('Error fetching data: ', error);
+        alert('error');
         setIsloading(false); // An error occurred, stop loading
       });
   }, [type, port]); // The empty array ensures this effect runs once when the component mounts
@@ -177,13 +177,13 @@ export default function Items({}) {
     if (!state.searchBooksInput) {
       return itemsData; // No filter applied
     } else {
-      const filtering = new RegExp(state.searchBooksInput, "ig");
+      const filtering = new RegExp(state.searchBooksInput, 'ig');
       return itemsData.filter((item) => item.title.match(filtering));
     }
   }
   const filterItemsByLevel = () => {
     // only papeterie have this type of filter
-    if (type === "papeterie") {
+    if (type === 'papeterie') {
       // List all level selections in order of precedence
       const levelSelections = [
         state.selectedBabyLevel,
@@ -194,7 +194,7 @@ export default function Items({}) {
 
       // Find the first selected level that is not 'Tout'
       const selectedLevel =
-        levelSelections.find((level) => level && level !== "Tout") || "";
+        levelSelections.find((level) => level && level !== 'Tout') || '';
 
       // Filter items based on the selected level
       return selectedLevel
@@ -206,11 +206,11 @@ export default function Items({}) {
   function filterItemsByLanguage() {
     // only papeterie have this type of filter
     // Deconstruct selectedLanguage for easier reference
-    if (type === "papeterie") {
+    if (type === 'papeterie') {
       const { selectedLanguage } = state;
 
       // Return all items if '0' is selected, else filter by the selected language
-      return selectedLanguage === "0"
+      return selectedLanguage === '0'
         ? itemsData
         : itemsData.filter((book) => book.langue === selectedLanguage);
     }
@@ -219,14 +219,14 @@ export default function Items({}) {
   const finalFilter = () => {
     // Applies different filters based on the 'type' and combines them with search term filtering
 
-    if (type === "papeterie") {
+    if (type === 'papeterie') {
       const itemsFilteredByLevel = filterItemsByLevel();
       const itemsFilteredByLanguage = filterItemsByLanguage();
 
       return filterBySearchTerm()?.filter(
         (item) =>
           itemsFilteredByLevel?.includes(item) &&
-          itemsFilteredByLanguage?.includes(item)
+          itemsFilteredByLanguage?.includes(item),
       );
     } else {
       //other {type} than papeterie, get filtered only bye search term
@@ -246,7 +246,7 @@ export default function Items({}) {
   const nextPage = () => {
     if (shouldShowNext)
       return dispatch({
-        type: "INCREMENT_CURRENT_PAGE",
+        type: 'INCREMENT_CURRENT_PAGE',
         payload: state.currentPage + 1,
       });
   };
@@ -254,34 +254,34 @@ export default function Items({}) {
   const prevPage = () => {
     if (shouldShowPrev) {
       return dispatch({
-        type: "INCREMENT_CURRENT_PAGE",
+        type: 'INCREMENT_CURRENT_PAGE',
         payload: state.currentPage - 1,
       });
     }
   };
   // the sidebarFilter is availble only for papeterie , and underconditions
   const showFilter = () => {
-    if (type === "papeterie") {
+    if (type === 'papeterie') {
       return !isMobile || (isMobile && isSideBarActive);
     }
     return false;
   };
   // after sidebar is opened, scrolling should be disabled
   useEffect(() => {
-    const rootElement = document.querySelector("body"); // Correctly get the #root element
-    if (!rootElement) return console.log("#root not found ");
+    const rootElement = document.querySelector('body'); // Correctly get the #root element
+    if (!rootElement) return console.log('#root not found ');
     if (isSideBarActive) {
-      document.body.classList.add("no-scroll");
-      rootElement.classList.add("shadow-overlay"); // Use the rootElement variable
+      document.body.classList.add('no-scroll');
+      rootElement.classList.add('shadow-overlay'); // Use the rootElement variable
     } else {
-      document.body.classList.remove("no-scroll");
-      rootElement.classList.remove("shadow-overlay"); // Use the rootElement variable
+      document.body.classList.remove('no-scroll');
+      rootElement.classList.remove('shadow-overlay'); // Use the rootElement variable
     }
 
     // Clean up function
     return () => {
-      document.body.classList.remove("no-scroll");
-      rootElement.classList.remove("shadow-overlay"); // Use the rootElement variable
+      document.body.classList.remove('no-scroll');
+      rootElement.classList.remove('shadow-overlay'); // Use the rootElement variable
     };
   }, [isSideBarActive]); // Only re-run the effect if isSideBarActive changes
 
@@ -359,10 +359,10 @@ export default function Items({}) {
         className={` transition-all duration-700 ease-in-out
         } ${
           !showFilter()
-            ? "m-0"
+            ? 'm-0'
             : isSideBarActive
-              ? " lg:ml-sidebar-expanded "
-              : "lg:ml-sidebar-collapsed"
+              ? ' lg:ml-sidebar-expanded '
+              : 'lg:ml-sidebar-collapsed'
         }`}
       >
         {/* Header section with navigation and type selection */}
@@ -382,9 +382,9 @@ export default function Items({}) {
 
             <span className="text-gray-900  capitalize">{type}</span>
           </div>
-          <div className="w-full lg:w-1/2 py-3 text-center">
-            <Dropdown className="w-[100%] lg:w-[300px] rounded-lg">
-              <DropdownTrigger className="w-[90%] lg:w-[300px] rounded-lg bg-white">
+          <div className="w-[95%] !min-w-[300px]  lg:w-1/2 py-3 text-center">
+            <Dropdown className=" rounded-lg">
+              <DropdownTrigger className="w-[100%] lg:w-[300px] rounded-lg bg-white">
                 <Button variant="bordered" className="w-full text-[15px]">
                   {type}
                 </Button>
@@ -423,10 +423,10 @@ export default function Items({}) {
               value={state.searchBooksInput}
               onChange={handleSearchChange}
               className="w-[320px] border-myBrand rounded-md"
-              key={"outside"}
+              key={'outside'}
               type="text"
               label="Chercher votre produit ici"
-              labelPlacement={"outside"}
+              labelPlacement={'outside'}
               aria-label="Search books"
             />
           </form>

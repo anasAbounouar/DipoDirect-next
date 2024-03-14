@@ -1,5 +1,5 @@
 // Define the type for the box prop expected by the component
-import dynamic from "next/dynamic";
+
 interface Box {
   id: number;
   name: string;
@@ -8,12 +8,12 @@ interface Box {
   imgSrc: string;
   pageSrc: string;
 }
-import MyButton from "@/components/common/myButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
-import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import MyButton from '@/components/common/myButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
+import { Button } from '@nextui-org/react';
+import { useState } from 'react';
 
 // Define the props expected by the LibraryClass component
 interface LibraryClassProps {
@@ -24,7 +24,7 @@ interface LibraryClassProps {
 export default function LibraryClass({ box, goToPage }: LibraryClassProps) {
   // Function to handle key down events for accessibility
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === 'Enter' || event.key === ' ') {
       goToPage(box.pageSrc);
     }
   };
@@ -32,14 +32,14 @@ export default function LibraryClass({ box, goToPage }: LibraryClassProps) {
 
   const getButtonColor = (name: string) => {
     switch (name) {
-      case "Écriture":
-        return "bg-myIndigo";
-      case "Papeterie":
-        return "bg-myBrand";
-      case "Organisation":
-        return "bg-myTealBlue";
+      case 'Écriture':
+        return 'bg-myIndigo';
+      case 'Papeterie':
+        return 'bg-myBrand';
+      case 'Organisation':
+        return 'bg-myTealBlue';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -68,7 +68,7 @@ export default function LibraryClass({ box, goToPage }: LibraryClassProps) {
         />
         <p
           className="mt-3 absolute top-4 text-white px-2 font-[400] mx-3 "
-          style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.75)" }}
+          style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.75)' }}
         >
           {box.description}
         </p>
@@ -83,7 +83,7 @@ export default function LibraryClass({ box, goToPage }: LibraryClassProps) {
             goToPage(box.pageSrc);
           }}
           ariaLabel={`Choose ${box.name}`}
-          text={isLoading ? "Loading" : box.btn} // Change text based on loading state
+          text={isLoading ? 'Loading' : box.btn} // Change text based on loading state
           height="30"
           icon={
             !isLoading ? (

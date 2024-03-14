@@ -5,9 +5,10 @@ interface ButtonProps {
   className?: string;
   ariaLabel: string; // ARIA label for accessibility
   height?: string;
+  [key: string]: any; // Allow any other property
 }
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '@nextui-org/react';
 
 const MyButton: React.FC<ButtonProps> = ({
   text,
@@ -23,8 +24,8 @@ const MyButton: React.FC<ButtonProps> = ({
       color="default"
       role="button"
       onClick={onClick}
-      className={`btn ${className || ""} ${
-        height || "h-[50px]"
+      className={`btn ${className || ''} ${
+        height || 'h-[50px]'
       } flex flex-row items-center justify-center`}
       aria-label={ariaLabel} // Fallback to text if no ariaLabel is provided
       tabIndex={0} // Ensure button is focusable

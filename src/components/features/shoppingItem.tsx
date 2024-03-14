@@ -1,25 +1,25 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
-import { useCallback, useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import { useCallback, useEffect, useState } from 'react';
 import {
   addToCart,
   isAddedToWishlist,
   removeFromCart,
   toggleWishlist,
-} from "@/utils/cartUtils";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@nextui-org/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from '@/utils/cartUtils';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@nextui-org/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleLeft,
   faMinus,
   faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
+} from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 // import { addToCart, addToWishlist } from '../../../data/CartManager';
 export default function ShoppingItem({ item, chosenLibrary, type }) {
   const dispatch = useDispatch();
@@ -33,13 +33,13 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
     }
   };
 
-  const cartStore = useSelector((store) => store?.cart);
+  const cartStore = useSelector((state: RootState) => state?.cart);
   const wishlist = cartStore?.wishlist;
   const addedToWishlist = isAddedToWishlist(
     wishlist,
     item,
     chosenLibrary,
-    type
+    type,
   );
 
   return (
@@ -51,18 +51,18 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
         {/* Heart icon for adding to wishlist */}
         <div className="relative pb-4 pt-2 flex items-center justify-between">
           <div>
-            {" "}
+            {' '}
             <button
               onClick={() =>
                 toggleWishlist(dispatch, item, chosenLibrary, type)
               }
               className="absolute bg-transparent  p-1 left-0 top-0 text-myHeartColor z-10 outline-none hover:border-color-none"
               aria-label={
-                addedToWishlist ? "Remove from wishlist" : "Add to wishlist"
+                addedToWishlist ? 'Remove from wishlist' : 'Add to wishlist'
               }
             >
               <i
-                className={`fa-regular ${addedToWishlist ? "fa-solid" : ""}
+                className={`fa-regular ${addedToWishlist ? 'fa-solid' : ''}
                      fa-heart text-[25px] my-heart hover:text-[28px] duration-200 `}
               ></i>
             </button>
@@ -86,10 +86,10 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
           aria-label="Book images"
         >
           <Swiper
-            effect={"coverflow"}
+            effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView={"auto"}
+            slidesPerView={'auto'}
             coverflowEffect={{
               rotate: -10,
               stretch: 10,
@@ -97,13 +97,13 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
               modifier: 2.5,
             }}
             pagination={{
-              el: ".swiper-pagination",
+              el: '.swiper-pagination',
               clickable: true,
             }}
             // navigation={true}
             navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
             }}
             modules={[EffectCoverflow, Pagination, Navigation]}
             className="mySwiper"
@@ -129,7 +129,7 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
                   className=" text-gray-800 text-3xl "
                 />
               </div>
-              <div className="swiper-pagination"></div>{" "}
+              <div className="swiper-pagination"></div>{' '}
               {/* Unstyled, add your classes */}
               <div className="swiper-button-next slider-arrow cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full p-2 !h-[44px] !w-[44px]">
                 <FontAwesomeIcon
@@ -153,7 +153,7 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
           Niveau : {item.level}
         </div>
         <div className="nowprice   bg-white my-1 text-sm">
-          Prix :{" "}
+          Prix :{' '}
           <span className="text-blue-600 font-bold"> {item.price} DH</span>
         </div>
         <span className="text-sm my-1 ">SKU: {item.id}</span>
@@ -162,7 +162,7 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
         <div className="flex flex-row mt-4 justify-start ">
           <Button
             className={`m-0 text-lg !min-w-2 px-2 !h-[29px] !min-h-0 mx-3 py-1 border rounded border-black ${
-              quantity > 0 ? "bg-white" : "bg-gray-200 border-none"
+              quantity > 0 ? 'bg-white' : 'bg-gray-200 border-none'
             }`}
             disabled={quantity === 0}
             onClick={() => {
@@ -189,8 +189,8 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
           <Button
             className={`text-sm !min-w-2 px-2 !h-[29px] !min-h-0 mx-3 py-1 border rounded border-black ${
               quantity < item?.maxQuantity
-                ? "bg-white"
-                : "bg-gray-200 border-none"
+                ? 'bg-white'
+                : 'bg-gray-200 border-none'
             }`}
             disabled={quantity === item?.maxQuantity || false}
             onClick={() => {
@@ -205,7 +205,7 @@ export default function ShoppingItem({ item, chosenLibrary, type }) {
           </Button>
         </div>
         <div className="font-bold text-sm mt-3 w-full capitalize flex">
-          sous-total :{" "}
+          sous-total :{' '}
           <strong className="text-myHeartColor ml-1 text-sm">
             {quantity * item.price} DH
           </strong>

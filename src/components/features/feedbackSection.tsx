@@ -1,58 +1,56 @@
-'use client'
+// @ts-nocheck
+'use client';
 import { useEffect, useState } from 'react';
-
+import { CSSProperties } from 'styled-components';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const avisStyle = {
-    position: 'relative',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    marginTop: '30px',
-    marginBottom: '30px',
-    
-  };
+  position: 'relative',
+  paddingTop: '10px',
+  paddingBottom: '10px',
+  marginTop: '30px',
+  marginBottom: '30px',
+};
 
-  const boxStyle = {
-    padding: '30px',
-    borderRadius: '6px',
-    marginBottom: '80px',
-    small: {
-      fontSize: '80%',
-    },
-    '> span': {
-      textAlign: 'center',
-      display: 'block',
-    },
-  };
+const boxStyle = {
+  padding: '30px',
+  borderRadius: '6px',
+  marginBottom: '80px',
+  small: {
+    fontSize: '80%',
+  },
+  '> span': {
+    textAlign: 'center',
+    display: 'block',
+  },
+};
 
-  const commentStyle = {
-    color: '#000',
-    fontStyle: 'italic',
-    lineHeight: '25px',
-    minHeight: '120px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: '4px',
-    position: 'relative',
- 
-  };
+const commentStyle = {
+  color: '#000',
+  fontStyle: 'italic',
+  lineHeight: '25px',
+  minHeight: '120px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '4px',
+  position: 'relative',
+};
 
-  const quoteRightStyle = {
-    position: 'absolute',
-    right: '0px',
-    bottom: '-13px',
-    fontSize: '30px',
-  };
+const quoteRightStyle = {
+  position: 'absolute',
+  right: '0px',
+  bottom: '-13px',
+  fontSize: '30px',
+};
 
-  const quoteLeftStyle = {
-    position: 'absolute',
-    left: '0px',
-    top: '-13px',
-    fontSize: '30px',
-  };
-
+const quoteLeftStyle = {
+  position: 'absolute',
+  left: '0px',
+  top: '-13px',
+  fontSize: '30px',
+};
 
 interface Avi {
   id: number;
@@ -112,7 +110,7 @@ export default function FeedbackSection() {
 
   return (
     <section id="avis" style={avisStyle}>
-      <div  className="flex align-center justify-center mb-5 text-[30px] text-myBrand relative">
+      <div className="flex align-center justify-center mb-5 text-[30px] text-myBrand relative">
         <h2 className="underline py-2 flex">Avis</h2>
       </div>
       <Swiper
@@ -120,12 +118,15 @@ export default function FeedbackSection() {
         spaceBetween={50}
         navigation
         pagination={{ clickable: true }}
-              cssMode={true} // Use Swiper's CSS mode
-            
+        cssMode={true} // Use Swiper's CSS mode
       >
         {Avis.map((avi) => (
-          <SwiperSlide  style={boxStyle}key={avi.id} className={`p-10 col-10 text-center bg-mySoftBrand `}>
-          <span>
+          <SwiperSlide
+            style={boxStyle}
+            key={avi.id}
+            className={`p-10 col-10 text-center bg-mySoftBrand `}
+          >
+            <span>
               <h5 className="text-myBrand font-bold text-lg">{avi.name}</h5>
               <small>
                 {avi.date}
@@ -153,14 +154,14 @@ export default function FeedbackSection() {
             </span>
 
             <div className={` bg-mySoftGreen custom-shadow `}>
-              <div   style={quoteLeftStyle}>
+              <div style={quoteLeftStyle}>
                 <i
                   className="fa fa-quote-left text-myBrand"
                   aria-hidden="true"
                 ></i>
               </div>
               <div className="text p-3">{avi.text}</div>
-              <div style={quoteRightStyle} >
+              <div style={quoteRightStyle}>
                 <i
                   className="fa fa-quote-right  text-myBrand"
                   aria-hidden="true"

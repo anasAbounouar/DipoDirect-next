@@ -4,7 +4,6 @@ import Image from "next/image";
 import { NavLink } from "../navlink";
 // import Link from 'next/link';
 import styled from "styled-components";
-import { Button } from "@nextui-org/react";
 import {
   faBagShopping,
   faCartShopping,
@@ -18,7 +17,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   DropdownItem,
   DropdownTrigger,
   Dropdown,
@@ -76,7 +74,7 @@ export default function CartNavDesktop() {
   const path = usePathname();
   const isHomePath = path === "/";
 
-  const { signOut, openSignIn } = useClerk();
+  const { signOut, openSignIn, openSignUp } = useClerk();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const { isSignedIn, user, isLoaded } = useUser();
@@ -95,9 +93,9 @@ export default function CartNavDesktop() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []); // Empty array ensures this effect runs only once on mount
 
-  const wishlist = useSelector((state) => state.cart.wishlist);
+  const wishlist = useSelector((state: RootState) => state.cart.wishlist);
 
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state: RootState) => state.cart.cart);
 
   const totalPrice = getTotalPriceInCart(cart);
 
@@ -159,7 +157,7 @@ export default function CartNavDesktop() {
                 id="rechercheGenerale"
               >
                 <Input
-                  size="sm"
+                  size="md"
                   isClearable
                   radius="lg"
                   classNames={{
@@ -281,6 +279,12 @@ export default function CartNavDesktop() {
               <DropdownItem key="profile" onClick={() => openSignIn()}>
                 <FontAwesomeIcon icon={faUser} />
                 <span className="font-semibold ml-1">Log in</span>
+              </DropdownItem>
+            )}
+            {!isSignedIn && (
+              <DropdownItem key="profile" onClick={() => openSignUp()}>
+                <FontAwesomeIcon icon={faUser} />
+                <span className="font-semibold ml-1">Sign Up</span>
               </DropdownItem>
             )}
             <DropdownItem key="my-orders">

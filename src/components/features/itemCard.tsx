@@ -1,34 +1,30 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addOrModifyBookInCart,
-  removeBookFromCart,
-  toggleBookWishlist,
-} from "@/app/GlobalRedux/Features/cart/cartSlice";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addOrModifyBookInCart } from '@/app/GlobalRedux/Features/cart/cartSlice';
 
-import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as fasHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
-import { Button } from "@nextui-org/react";
-import { removeFromCart, toggleWishlist, addToCart } from "@/utils/cartUtils";
-import { useState } from "react";
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import { Button } from '@nextui-org/react';
+import { removeFromCart, toggleWishlist, addToCart } from '@/utils/cartUtils';
+import { useState } from 'react';
 // import styles from "./ItemCard.module.scss";:
 const card = {
-  borderRadius: "10px",
-  background: "white",
-  boxShadow: "0px 2.423px 2.423px 0px rgba(0, 0, 0, 0.25)",
+  borderRadius: '10px',
+  background: 'white',
+  boxShadow: '0px 2.423px 2.423px 0px rgba(0, 0, 0, 0.25)',
 };
 const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state: RootState) => state.cart.cart);
 
   const wishlistBooks = useSelector(
-    (state) => state.cart.wishlist[chosenLibrary][type]
+    (state: RootState) => state.cart.wishlist[chosenLibrary][type],
   );
 
   const addedToWishlist =
@@ -41,27 +37,6 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
   const addedToCart =
     booksInCategory?.some((element) => element?.id === item.id) || false;
 
-  const handleAddToCart = () => {
-    console.log(cart[chosenLibrary]?.[type]);
-    // Assuming you have access to the necessary details from props or elsewhere
-    dispatch(
-      addOrModifyBookInCart({
-        book: item, // The item prop passed to the ItemCard component
-        type,
-        chosenLibrary,
-        quantity: 1,
-      })
-    );
-  };
-  // const handleRemoveFromCart = () => {
-  //   dispatch(
-  //     removeBookFromCart({
-  //       bookId: item.id,
-  //       type,
-  //       chosenLibrary,
-  //     })
-  //   );
-  // };
   const handleAddingOrRemoving = () => {
     if (addedToCart) {
       removeFromCart(dispatch, item.id, chosenLibrary, type);
@@ -81,7 +56,7 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
             }}
             className="absolute bg-transparent p-1 left-0 top-0 text-myHeartColor z-10 outline-none hover:border-color-none"
             aria-label={
-              addedToWishlist ? "Remove from wishlist" : "Add to wishlist"
+              addedToWishlist ? 'Remove from wishlist' : 'Add to wishlist'
             }
           >
             {addedToWishlist ? (
@@ -95,21 +70,21 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
         {/* Carousel container with Swiper */}
         <div className="carousel-container">
           <Swiper
-            effect={"coverflow"}
+            effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
-            slidesPerView={"auto"}
+            slidesPerView={'auto'}
             coverflowEffect={{
               rotate: 0,
               stretch: 10,
               depth: 200,
               modifier: 2.5,
             }}
-            pagination={{ el: ".swiper-pagination", clickable: true }}
+            pagination={{ el: '.swiper-pagination', clickable: true }}
             // navigation={true}
             navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
             }}
             modules={[EffectCoverflow, Pagination, Navigation]}
             className="mySwiper"
@@ -133,7 +108,7 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
                   className=" text-gray-800 text-3xl "
                 />
               </div>
-              <div className="swiper-pagination"></div>{" "}
+              <div className="swiper-pagination"></div>{' '}
               {/* Unstyled, add your classes */}
               <div className="swiper-button-next slider-arrow cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full p-2 !h-[44px] !w-[44px]">
                 <FontAwesomeIcon
@@ -167,14 +142,14 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
                 handleAddingOrRemoving();
                 setIsLoading(false);
               }}
-              className={`btn w-11/12 rounded-lg bg-[#004494] text-white ${addedToCart ? "bg-myBrand" : ""}`}
+              className={`btn w-11/12 rounded-lg bg-[#004494] text-white ${addedToCart ? 'bg-myBrand' : ''}`}
               aria-pressed={addedToCart}
             >
               {isLoading
-                ? "Loading..."
+                ? 'Loading...'
                 : addedToCart
-                  ? "Bien ajouté ✓"
-                  : "+ Ajouter au panier"}
+                  ? 'Bien ajouté ✓'
+                  : '+ Ajouter au panier'}
               {!isLoading && (
                 <FontAwesomeIcon icon={faShoppingCart} className="ml-2" />
               )}
