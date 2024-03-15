@@ -9,6 +9,8 @@ import {
   faCartShopping,
   faRightFromBracket,
   faSearch,
+  faSignInAlt,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { Input } from '@nextui-org/react';
 // import { SearchIcon } from "./SearchIcon";
@@ -217,10 +219,14 @@ export default function CartNavDesktop() {
                 aria-label={`wishlist ${wishlist}`}
                 href="/wishlist"
               >
-                <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
+                <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-myHeartColor rounded-full flex items-center justify-center text-white text-sm">
                   {wishlistTotalCount}
                 </div>
-                <FontAwesomeIcon icon={faHeart} fontSize={20} />
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className="hover:text-myHeartColor"
+                  fontSize={20}
+                />
               </NavLink>
               <span className="text-xs"> Wishlist</span>
             </NavbarItem>
@@ -278,14 +284,14 @@ export default function CartNavDesktop() {
                 <p className="font-semibold">{userEmail}</p>
               </DropdownItem>
             ) : (
-              <DropdownItem key="profile" onClick={() => openSignIn()}>
-                <FontAwesomeIcon icon={faUser} />
+              <DropdownItem key="SignIn" onClick={() => openSignIn()}>
+                <FontAwesomeIcon icon={faSignInAlt} />
                 <span className="font-semibold ml-1">Log in</span>
               </DropdownItem>
             )}
             {!isSignedIn && (
-              <DropdownItem key="profile" onClick={() => openSignUp()}>
-                <FontAwesomeIcon icon={faUser} />
+              <DropdownItem key="SignUp" onClick={() => openSignUp()}>
+                <FontAwesomeIcon icon={faUserPlus} className="" />
                 <span className="font-semibold ml-1">Sign Up</span>
               </DropdownItem>
             )}
@@ -317,12 +323,15 @@ export default function CartNavDesktop() {
             </DropdownItem>
             <DropdownItem
               key="wishlist"
-              color="success"
               onClick={() => {
                 router.push('/wishlist');
               }}
             >
-              <FontAwesomeIcon icon={faHeart} fontSize={20} />{' '}
+              <FontAwesomeIcon
+                icon={faHeart}
+                className="text-myHeartColor"
+                fontSize={20}
+              />{' '}
               <span>Wishlist</span>
             </DropdownItem>
             {isSignedIn === true && (

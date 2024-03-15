@@ -343,7 +343,7 @@ export default function Items({}) {
     );
   };
   return (
-    <section id="intern" className={`relative pb-4 bg-myContent `}>
+    <section id="intern" className={`relative pb-4 pt-7 bg-myContent `}>
       {showFilter() && (
         <SideFilter
           babyLevels={babyLevels}
