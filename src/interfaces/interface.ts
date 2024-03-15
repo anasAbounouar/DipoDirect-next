@@ -37,9 +37,12 @@ interface CartState {
   cart: CartAndWishlistState;
   wishlist: CartAndWishlistState;
 }
-
+interface sidebarState {
+  isSideBarActive: boolean;
+}
 // Interface for the root state (if you have other state slices, include them here)
 interface RootState {
   cart: CartState;
+  sidebar: sidebarState;
   // Include other slices here as needed
 }

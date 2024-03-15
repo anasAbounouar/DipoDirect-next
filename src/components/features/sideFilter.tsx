@@ -1,15 +1,17 @@
-import { useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
+} from '@nextui-org/react';
+import { setSidebarActive } from '@/app/GlobalRedux/Features/sidebar/sidebarSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SideFilterComponent = styled.aside`
   z-index: 999;
@@ -111,7 +113,7 @@ const SideFilterComponent = styled.aside`
         &::before {
           height: 20px;
           width: 20px;
-          content: "";
+          content: '';
           position: absolute;
           background: white;
           border-radius: 100%;
@@ -127,14 +129,14 @@ const SideFilterComponent = styled.aside`
         }
       }
 
-      input[type="radio"] {
+      input[type='radio'] {
         -webkit-appearance: none !important;
         -moz-appearance: none !important;
         appearance: none !important;
         /* Your custom styles */
         height: 20px;
         width: 20px;
-        content: "";
+        content: '';
         position: absolute;
         background: white;
         border-radius: 100%;
@@ -148,7 +150,7 @@ const SideFilterComponent = styled.aside`
         margin-left: 10px;
       }
 
-      input[type="radio"]:checked + label::before {
+      input[type='radio']:checked + label::before {
         background-color: yellow;
       }
     }
@@ -170,7 +172,7 @@ const SideFilterComponent = styled.aside`
     display: flex;
     align-items: center;
     justify-content: center;
-    content: "<";
+    content: '<';
     height: 40px;
     width: 40px;
     background: white;
@@ -195,44 +197,50 @@ function SideFilter({
   selectedPrimaryLevel,
   selectedMiddleSchoolLevel,
   selectedHighSchoolLevel,
-  isSideBarActive,
-  setIsSideBarActive,
+
   dispatch,
 }) {
   // Use media query hook
   const isMobile = useMediaQuery({ maxWidth: 1024 });
+  const dispatchGlobal = useDispatch();
+  const setIsSideBarActive = (value: boolean) => {
+    dispatchGlobal(setSidebarActive(value));
+  };
+  const isSideBarActive = useSelector(
+    (state: RootState) => state?.sidebar?.isSideBarActive,
+  );
   useEffect(() => {
     const handleResize = () => {
-      const sideFilter = document.getElementById("sideFilter");
-      const language = document.getElementById("language");
-      const level = document.getElementById("level");
+      const sideFilter = document.getElementById('sideFilter');
+      const language = document.getElementById('language');
+      const level = document.getElementById('level');
 
       if (!sideFilter || !language || !level)
-        console.log("sidefilter/language/level is not found as id  ");
+        console.log('sidefilter/language/level is not found as id  ');
       else {
         if (!isSideBarActive) {
           if (isMobile) {
-            sideFilter.style.display = "none";
+            sideFilter.style.display = 'none';
           }
 
-          language.style.display = "none";
-          level.style.display = "none";
+          language.style.display = 'none';
+          level.style.display = 'none';
         } else if (isSideBarActive) {
-          language.style.display = "block";
-          level.style.display = "block";
+          language.style.display = 'block';
+          level.style.display = 'block';
         }
       }
     };
 
     // Add event listener for window resize
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Initial call to handleResize to set styles when the component mounts
     handleResize();
 
     // Cleanup the event listener when the component unmounts
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [isSideBarActive, isMobile]);
   // A helper function to create a radio button
@@ -244,32 +252,31 @@ function SideFilter({
         name="language"
         value={value}
         checked={checked === value}
-        onChange={() => dispatch({ type: "SELECT_LANGUAGE", payload: value })}
+        onChange={() => dispatch({ type: 'SELECT_LANGUAGE', payload: value })}
         className="radio-button"
       />
       <label htmlFor={id}>{label}</label>
     </>
   );
 
-
   return (
     <SideFilterComponent
       id="sideFilter"
       className={`relative text-sm pt-0 ${
         isSideBarActive
-          ? "z-50 w-full block lg:w-sidebar-expanded"
-          : "z--1 w-0 lg:w-sidebar-collapsed"
+          ? 'z-50 w-full block lg:w-sidebar-expanded'
+          : 'z--1 w-0 lg:w-sidebar-collapsed'
       }`}
       {...(!isMobile && {
         onMouseEnter: () => setIsSideBarActive(true),
         onMouseLeave: () => setIsSideBarActive(false),
       })}
     >
-      <div className="sidebarArrow" aria-hidden="true">
+      <div className="sidebarArrow !hidden md:block" aria-hidden="true">
         <FontAwesomeIcon
           icon={faAnglesRight}
           className={`fa-solid ${
-            !isSideBarActive ? "" : "transform rotate-180"
+            !isSideBarActive ? '' : 'transform rotate-180'
           }`}
         />
       </div>
@@ -279,14 +286,14 @@ function SideFilter({
           className="flex flex-col language    mt-3 ml-2 items-start relative"
           name="filters"
         >
-          <div>{renderRadioButton("tout", "0", selectedLanguage, "Tout")}</div>
+          <div>{renderRadioButton('tout', '0', selectedLanguage, 'Tout')}</div>
           <div>
-            {renderRadioButton("fr", "fr", selectedLanguage, "Francais")}
+            {renderRadioButton('fr', 'fr', selectedLanguage, 'Francais')}
           </div>
           <div>
-            {renderRadioButton("en", "en", selectedLanguage, "Englais")}
+            {renderRadioButton('en', 'en', selectedLanguage, 'Englais')}
           </div>
-          <div>{renderRadioButton("ar", "ar", selectedLanguage, "Arabe")}</div>
+          <div>{renderRadioButton('ar', 'ar', selectedLanguage, 'Arabe')}</div>
         </form>
       </div>
 
@@ -300,7 +307,7 @@ function SideFilter({
           value={selectedPrimaryLevel}
           onChange={(e) =>
             dispatch({
-              type: "SELECT_PRIMARY_LEVEL",
+              type: 'SELECT_PRIMARY_LEVEL',
               payload: e.target.value,
             })
           }
@@ -320,7 +327,7 @@ function SideFilter({
           value={selectedMiddleSchoolLevel}
           onChange={(e) =>
             dispatch({
-              type: "SELECT_MIDDLE_SCHOOL_LEVEL",
+              type: 'SELECT_MIDDLE_SCHOOL_LEVEL',
               payload: e.target.value,
             })
           }
@@ -340,7 +347,7 @@ function SideFilter({
           value={selectedHighSchoolLevel}
           onChange={(e) =>
             dispatch({
-              type: "SELECT_HIGH_SCHOOL_LEVEL",
+              type: 'SELECT_HIGH_SCHOOL_LEVEL',
               payload: e.target.value,
             })
           }

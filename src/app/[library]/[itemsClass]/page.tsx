@@ -21,6 +21,11 @@ import {
 } from '@nextui-org/react';
 import { useParams, useRouter } from 'next/navigation';
 import ItemCard from '@/components/features/itemCard';
+import { useSelector } from 'react-redux';
+import {
+  setSidebarActive,
+  toggleSidebar,
+} from '@/app/GlobalRedux/Features/sidebar/sidebarSlice';
 // import { addToCart, addToWishlist } from '../../data/CartManager.ts';
 // Custom hook to determine if the device is mobile based on screen width
 const useIsMobile = () => {
@@ -117,7 +122,6 @@ const typeOptions = [
 
 const itemsPerPage = 12; // Number of items to display per page
 export default function Items({}) {
-  const [isSideBarActive, setIsSideBarActive] = useState(false);
   const isMobile = useIsMobile();
   // const router.push = userouter.push()
   const router = useRouter();
@@ -127,6 +131,9 @@ export default function Items({}) {
   const type = params?.itemsClass;
 
   const [state, dispatch] = useReducer(reducer, initialFilterState);
+  const isSideBarActive = useSelector(
+    (state: RootState) => state?.sidebar?.isSideBarActive,
+  );
 
   // const toggleSidebar = () => {
   //   //activate and disactivate sidebar
@@ -336,7 +343,7 @@ export default function Items({}) {
     );
   };
   return (
-    <section id="intern" className={`relative pb-4 bg-myContent  pt-7`}>
+    <section id="intern" className={`relative pb-4 bg-myContent `}>
       {showFilter() && (
         <SideFilter
           babyLevels={babyLevels}
@@ -348,8 +355,6 @@ export default function Items({}) {
           selectedPrimaryLevel={state.selectedPrimaryLevel}
           selectedMiddleSchoolLevel={state.selectedMiddleSchoolLevel}
           selectedHighSchoolLevel={state.selectedHighSchoolLevel}
-          isSideBarActive={isSideBarActive}
-          setIsSideBarActive={setIsSideBarActive}
           dispatch={dispatch}
         />
       )}
@@ -382,7 +387,7 @@ export default function Items({}) {
 
             <span className="text-gray-900  capitalize">{type}</span>
           </div>
-          <div className="w-[95%] !min-w-[300px]  lg:w-1/2 py-3 text-center">
+          <div className="w-[95%] m-auto !min-w-[300px]  lg:w-5/12 py-3 text-center">
             <Dropdown className=" rounded-lg">
               <DropdownTrigger className="w-[100%] lg:w-[300px] rounded-lg bg-white">
                 <Button variant="bordered" className="w-full text-[15px]">
@@ -399,7 +404,6 @@ export default function Items({}) {
                     key={option.id}
                     onClick={() => {
                       handleChange(option.value);
-                      console.log(option.value);
                     }}
                   >
                     {option.label}

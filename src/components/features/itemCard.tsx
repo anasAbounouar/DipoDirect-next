@@ -134,7 +134,7 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
           </div>
 
           {/* Action Panel */}
-          <div className="m-2 flex  items-center justify-center">
+          <div className=" flex  items-center justify-center w-full">
             <Button
               isLoading={isLoading}
               onClick={() => {
@@ -142,16 +142,18 @@ const ItemCard = ({ item, type, chosenLibrary, onClick }) => {
                 handleAddingOrRemoving();
                 setIsLoading(false);
               }}
-              className={`btn w-11/12 rounded-lg bg-[#004494] text-white ${addedToCart ? 'bg-myBrand' : ''}`}
+              className={`btn w-full rounded-lg bg-[#004494] text-white ${addedToCart ? 'bg-myBrand' : ''}`}
               aria-pressed={addedToCart}
             >
-              {isLoading
-                ? 'Loading...'
-                : addedToCart
-                  ? 'Bien ajouté ✓'
-                  : '+ Ajouter au panier'}
+              {isLoading ? (
+                'Loading...'
+              ) : addedToCart ? (
+                <span className="p-0 m-0">Bien ajouté ✓</span>
+              ) : (
+                <span className="p-0 m-0">+ Ajouter au panier</span>
+              )}
               {!isLoading && (
-                <FontAwesomeIcon icon={faShoppingCart} className="ml-2" />
+                <FontAwesomeIcon icon={faShoppingCart} className="" />
               )}
             </Button>
           </div>

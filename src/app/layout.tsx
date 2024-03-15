@@ -24,8 +24,9 @@ import Footer from '@/components/layout/footer';
 import { ReduxProvider } from './GlobalRedux/provider';
 import Link from 'next/link';
 import { ClerkProvider } from '@clerk/nextjs';
-import CartNavDesktop from '@/components/layout/cartNavDesktop';
+import CartNavDesktop from '@/components/layout/navbar';
 import { Toaster } from 'react-hot-toast';
+import MobileNavigationBar from '@/components/layout/mobileNavigationBar';
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,6 +64,7 @@ export default function RootLayout({
                   },
                 }}
               />
+              <MobileNavigationBar />
               <CartNavDesktop />
               {children}
               <Footer />

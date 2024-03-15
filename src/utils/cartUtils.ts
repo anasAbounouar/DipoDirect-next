@@ -2,8 +2,8 @@ import {
   addOrModifyBookInCart,
   removeBookFromCart,
   toggleBookWishlist,
-} from "@/app/GlobalRedux/Features/cart/cartSlice";
-import { parsePrice } from "./price";
+} from '@/app/GlobalRedux/Features/cart/cartSlice';
+import { parsePrice } from './price';
 
 // Utility function to count total books in wishlist
 export const getTotalBooksInWishlist = (wishlist) => {
@@ -40,7 +40,7 @@ export const toggleWishlist = (dispatch, book, chosenLibrary, type) => {
       book,
       chosenLibrary,
       type,
-    })
+    }),
   );
 };
 export const isAddedToWishlist = (wishlist, book, chosenLibrary, type) => {
@@ -59,7 +59,7 @@ export const addToCart = (
   book,
   chosenLibrary,
   type,
-  quantity = 1
+  quantity = 1,
 ) => {
   // Assuming you have access to the necessary details from props or elsewhere
   dispatch(
@@ -68,7 +68,7 @@ export const addToCart = (
       chosenLibrary,
       type,
       quantity,
-    })
+    }),
   );
 };
 export const removeFromCart = (dispatch, bookId, chosenLibrary, type) => {
@@ -77,7 +77,7 @@ export const removeFromCart = (dispatch, bookId, chosenLibrary, type) => {
       bookId,
       chosenLibrary,
       type,
-    })
+    }),
   );
 };
 export const getTotalPriceInCart = (cart) => {
@@ -98,7 +98,7 @@ export const getTotalPriceInCart = (cart) => {
 };
 
 export const findFirstLibraryWithBooks = (cart) => {
-  let chosenLibrary = "";
+  let chosenLibrary = '';
   let types = [];
 
   for (const [libraryName, categories] of Object.entries(cart)) {

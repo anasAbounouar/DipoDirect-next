@@ -1,16 +1,16 @@
-"use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { NavLink } from "../navlink";
+'use client';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { NavLink } from '../navlink';
 // import Link from 'next/link';
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   faBagShopping,
   faCartShopping,
   faRightFromBracket,
   faSearch,
-} from "@fortawesome/free-solid-svg-icons";
-import { Input } from "@nextui-org/react";
+} from '@fortawesome/free-solid-svg-icons';
+import { Input } from '@nextui-org/react';
 // import { SearchIcon } from "./SearchIcon";
 import {
   Navbar,
@@ -22,18 +22,18 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
-} from "@nextui-org/react";
-import { usePathname, useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faHeart, faUser } from "@fortawesome/free-regular-svg-icons";
-import { useSelector } from "react-redux";
+} from '@nextui-org/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faHeart, faUser } from '@fortawesome/free-regular-svg-icons';
+import { useSelector } from 'react-redux';
 import {
   getTotalBooksInCart,
   getTotalBooksInWishlist,
   getTotalPriceInCart,
-} from "@/utils/cartUtils";
-import { SignedIn, useClerk, useUser, useSignIn } from "@clerk/nextjs";
-import { EmailAddress } from "@clerk/nextjs/server";
+} from '@/utils/cartUtils';
+import { SignedIn, useClerk, useUser, useSignIn } from '@clerk/nextjs';
+import { EmailAddress } from '@clerk/nextjs/server';
 
 const AcmeLogo = () => (
   <>
@@ -72,13 +72,15 @@ const Nav = styled(Navbar)`
 
 export default function CartNavDesktop() {
   const path = usePathname();
-  const isHomePath = path === "/";
+  const isHomePath = path === '/';
 
   const { signOut, openSignIn, openSignUp } = useClerk();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const { isSignedIn, user, isLoaded } = useUser();
   const userEmail = user?.emailAddresses[0].emailAddress;
+  // Check if user has an image
+  const userImage = user?.imageUrl || '/assets/defaultUserImage.jpg';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,10 +89,10 @@ export default function CartNavDesktop() {
     };
 
     // Add event listener
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     // Remove event listener on cleanup
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []); // Empty array ensures this effect runs only once on mount
 
   const wishlist = useSelector((state: RootState) => state.cart.wishlist);
@@ -99,9 +101,9 @@ export default function CartNavDesktop() {
 
   const totalPrice = getTotalPriceInCart(cart);
 
-  const cartNumber = getTotalBooksInCart(cart)?.length;
+  const cartTotalCount = getTotalBooksInCart(cart)?.length;
 
-  const wishlistNumber = getTotalBooksInWishlist(wishlist).length;
+  const wishlistTotalCount = getTotalBooksInWishlist(wishlist).length;
 
   return (
     <Nav>
@@ -109,7 +111,7 @@ export default function CartNavDesktop() {
         <NavLink exact="true" href="/" className="flex flex-row">
           <AcmeLogo />
           <p className=" ml-1 font-bold text-inherit self-center text-xl  whitespace-nowrap text-myBrand hover:text-blue-400 delay-100">
-            {" "}
+            {' '}
             DipoDirect
           </p>
         </NavLink>
@@ -143,12 +145,12 @@ export default function CartNavDesktop() {
 
         {!isHomePath && (
           <>
-            {" "}
+            {' '}
             <NavbarItem
               style={{
-                transition: "opacity 1.5s ease, visibility 0.5s",
+                transition: 'opacity 1.5s ease, visibility 0.5s',
                 opacity: isScrolled ? 0 : 1,
-                visibility: isScrolled ? "hidden" : "visible",
+                visibility: isScrolled ? 'hidden' : 'visible',
               }}
             >
               <form
@@ -161,24 +163,24 @@ export default function CartNavDesktop() {
                   isClearable
                   radius="lg"
                   classNames={{
-                    label: "text-black/50 dark:text-white/90",
+                    label: 'text-black/50 dark:text-white/90',
                     input: [
-                      "bg-transparent",
-                      "text-black/90 dark:text-white/90",
-                      "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                      'bg-transparent',
+                      'text-black/90 dark:text-white/90',
+                      'placeholder:text-default-700/50 dark:placeholder:text-white/60',
                     ],
-                    innerWrapper: "bg-transparent",
+                    innerWrapper: 'bg-transparent',
                     inputWrapper: [
-                      "shadow-xl",
-                      "bg-default-200/50",
-                      "dark:bg-default/60",
-                      "backdrop-blur-xl",
-                      "backdrop-saturate-200",
-                      "hover:bg-default-200/70",
-                      "dark:hover:bg-default/70",
-                      "group-data-[focused=true]:bg-default-200/50",
-                      "dark:group-data-[focused=true]:bg-default/60",
-                      "!cursor-text",
+                      'shadow-xl',
+                      'bg-default-200/50',
+                      'dark:bg-default/60',
+                      'backdrop-blur-xl',
+                      'backdrop-saturate-200',
+                      'hover:bg-default-200/70',
+                      'dark:hover:bg-default/70',
+                      'group-data-[focused=true]:bg-default-200/50',
+                      'dark:group-data-[focused=true]:bg-default/60',
+                      '!cursor-text',
                     ],
                   }}
                   placeholder="--Recherche generale"
@@ -216,7 +218,7 @@ export default function CartNavDesktop() {
                 href="/wishlist"
               >
                 <div className="shop-counter absolute bottom-2 left-7  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
-                  {wishlistNumber}
+                  {wishlistTotalCount}
                 </div>
                 <FontAwesomeIcon icon={faHeart} fontSize={20} />
               </NavLink>
@@ -231,7 +233,7 @@ export default function CartNavDesktop() {
                 href="/cart"
               >
                 <div className="shop-counter absolute bottom-4   left-5  w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">
-                  {cartNumber}
+                  {cartTotalCount}
                 </div>
                 <FontAwesomeIcon fontSize={20} icon={faCartShopping} />
                 <span className="ml-3">{totalPrice} MAD</span>
@@ -255,7 +257,7 @@ export default function CartNavDesktop() {
                 color="secondary"
                 name="Jason Hughes"
                 size="sm"
-                src="/assets/avatar.png"
+                src={userImage}
               />
             ) : (
               <Avatar
@@ -287,12 +289,17 @@ export default function CartNavDesktop() {
                 <span className="font-semibold ml-1">Sign Up</span>
               </DropdownItem>
             )}
-            <DropdownItem key="my-orders">
-              {" "}
+            <DropdownItem
+              key="my-orders"
+              onClick={() => router.push('/myorders')}
+            >
               <FontAwesomeIcon icon={faBagShopping} />
               <span className="ml-1">My orders</span>
             </DropdownItem>
-            <DropdownItem key="dashboard">
+            <DropdownItem
+              key="dashboard"
+              onClick={() => router.push('/dashboard')}
+            >
               <div className="flex flex-row items-baseline">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -308,15 +315,21 @@ export default function CartNavDesktop() {
                 <span className="ml-1">Dashboard</span>
               </div>
             </DropdownItem>
-            <DropdownItem key="wishlist" color="success">
-              <FontAwesomeIcon icon={faHeart} fontSize={20} />{" "}
+            <DropdownItem
+              key="wishlist"
+              color="success"
+              onClick={() => {
+                router.push('/wishlist');
+              }}
+            >
+              <FontAwesomeIcon icon={faHeart} fontSize={20} />{' '}
               <span>Wishlist</span>
             </DropdownItem>
             {isSignedIn === true && (
               <DropdownItem
                 key="logout"
                 color="danger"
-                onClick={() => signOut(() => router.push("/"))}
+                onClick={() => signOut(() => router.push('/'))}
               >
                 <FontAwesomeIcon icon={faRightFromBracket} />
                 <span className="ml-1">Log out</span>
