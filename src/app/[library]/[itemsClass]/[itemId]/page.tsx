@@ -43,8 +43,9 @@ export default function Item({ params }) {
     setIsLoading(true); // Assume setIsLoading is a state setter function defined in your component
 
     try {
+     
       const response = await fetch(
-        `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`,
+        `https://dipodirectapi.onrender.com/DipoDirectApi/suppliers/${chosenLibrary}/${type}`,
       );
       if (!response.ok) {
         throw new Error('Network response was not ok'); // Throws an error if response is not 2xx
