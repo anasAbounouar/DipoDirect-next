@@ -45,7 +45,7 @@ export default function Item({ params }) {
     try {
      
       const response = await fetch(
-        `https://dipodirectapi.onrender.com/DipoDirectApi/suppliers/${chosenLibrary}/${type}`,
+        `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`,
       );
       if (!response.ok) {
         throw new Error('Network response was not ok'); // Throws an error if response is not 2xx
