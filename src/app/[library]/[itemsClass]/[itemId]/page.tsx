@@ -43,7 +43,6 @@ export default function Item({ params }) {
     setIsLoading(true); // Assume setIsLoading is a state setter function defined in your component
 
     try {
-     
       const response = await fetch(
         `https://dipo-direct-api.onrender.com/api/supplies/${chosenLibrary}/${type}`,
       );
