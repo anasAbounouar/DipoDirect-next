@@ -49,115 +49,115 @@ const initialState = {
     arrissala: {
       ecritures: [],
       papeterie: [
-        {
-          _id: '65ef344b6f4d15d0cf6dd822',
+        // {
+        //   _id: '65ef344b6f4d15d0cf6dd822',
 
-          id: 11,
+        //   id: 11,
 
-          title: 'je sais pas',
+        //   title: 'je sais pas',
 
-          level: 'CM2',
+        //   level: 'CM2',
 
-          langue: 'ar',
+        //   langue: 'ar',
 
-          imgSrc: [
-            '/assets/ArrissalaPhotos/1.png',
-            '/assets/ArrissalaPhotos/0.png',
-            '/assets/ArrissalaPhotos/1.png',
-          ],
+        //   imgSrc: [
+        //     '/assets/ArrissalaPhotos/1.png',
+        //     '/assets/ArrissalaPhotos/0.png',
+        //     '/assets/ArrissalaPhotos/1.png',
+        //   ],
 
-          price: '230.00',
+        //   price: '230.00',
 
-          addedToCart: false,
+        //   addedToCart: false,
 
-          addedToWishlist: false,
+        //   addedToWishlist: false,
 
-          littleBooksCount: 2,
+        //   littleBooksCount: 2,
 
-          maxQuantity: 3,
-        },
+        //   maxQuantity: 3,
+        // },
 
-        {
-          _id: '65ef344b6f4d15d0cf6dd823',
+        // {
+        //   _id: '65ef344b6f4d15d0cf6dd823',
 
-          id: 12,
+        //   id: 12,
 
-          title: 'Miftah al qirâ’a 1',
+        //   title: 'Miftah al qirâ’a 1',
 
-          level: 'Petite',
+        //   level: 'Petite',
 
-          langue: 'fr',
+        //   langue: 'fr',
 
-          imgSrc: [
-            '/assets/ArrissalaPhotos/1.png',
-            '/assets/ArrissalaPhotos/0.png',
-            '/assets/ArrissalaPhotos/1.png',
-          ],
+        //   imgSrc: [
+        //     '/assets/ArrissalaPhotos/1.png',
+        //     '/assets/ArrissalaPhotos/0.png',
+        //     '/assets/ArrissalaPhotos/1.png',
+        //   ],
 
-          price: '230.00',
+        //   price: '230.00',
 
-          addedToCart: false,
+        //   addedToCart: false,
 
-          addedToWishlist: false,
+        //   addedToWishlist: false,
 
-          littleBooksCount: 2,
+        //   littleBooksCount: 2,
 
-          maxQuantity: 3,
-        },
+        //   maxQuantity: 3,
+        // },
 
-        {
-          _id: '65ef344b6f4d15d0cf6dd821',
+        // {
+        //   _id: '65ef344b6f4d15d0cf6dd821',
 
-          id: 1,
+        //   id: 1,
 
-          title: 'mousaeid',
+        //   title: 'mousaeid',
 
-          level: 'Moyenne',
+        //   level: 'Moyenne',
 
-          langue: 'en',
+        //   langue: 'en',
 
-          imgSrc: [
-            '/assets/ArrissalaPhotos/2.png',
-            '/assets/ArrissalaPhotos/0.png',
-          ],
+        //   imgSrc: [
+        //     '/assets/ArrissalaPhotos/2.png',
+        //     '/assets/ArrissalaPhotos/0.png',
+        //   ],
 
-          price: '150',
+        //   price: '150',
 
-          addedToCart: false,
+        //   addedToCart: false,
 
-          addedToWishlist: false,
+        //   addedToWishlist: false,
 
-          littleBooksCount: 1,
+        //   littleBooksCount: 1,
 
-          maxQuantity: 4,
-        },
+        //   maxQuantity: 4,
+        // },
 
-        {
-          _id: '65ef344b6f4d15d0cf6dd820',
+        // {
+        //   _id: '65ef344b6f4d15d0cf6dd820',
 
-          id: 0,
+        //   id: 0,
 
-          title: 'Miftah al qirâ’a 1',
+        //   title: 'Miftah al qirâ’a 1',
 
-          level: '1 Bac',
+        //   level: '1 Bac',
 
-          langue: 'fr',
+        //   langue: 'fr',
 
-          imgSrc: [
-            '/assets/ArrissalaPhotos/1.png',
-            '/assets/ArrissalaPhotos/0.png',
-          ],
+        //   imgSrc: [
+        //     '/assets/ArrissalaPhotos/1.png',
+        //     '/assets/ArrissalaPhotos/0.png',
+        //   ],
 
-          price: '100',
+        //   price: '100',
 
-          addedToCart: false,
+        //   addedToCart: false,
 
-          addedToWishlist: false,
+        //   addedToWishlist: false,
 
-          littleBooksCount: 2,
+        //   littleBooksCount: 2,
 
-          maxQuantity: 3,
-        },
+        //   maxQuantity: 3,
+        // },
       ],
       organisation: [],
     },
